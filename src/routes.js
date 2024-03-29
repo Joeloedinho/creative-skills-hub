@@ -13,7 +13,7 @@ const routes = createBrowserRouter([
                 element: <LoginPage />
             },
             {
-                path: routePaths.register,
+                path: 'register',
                 element: <Register />
             },
         ]

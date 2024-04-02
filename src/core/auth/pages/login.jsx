@@ -1,12 +1,13 @@
-import { Box, Button, Divider, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, Link as MUILink, Stack, TextField, Typography } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FullTitleElement, routePaths } from "../../../shared";
-import { Google } from "@mui/icons-material";
+import { FullTitleElement } from "../../../shared";
+import { Google, MusicNote } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   return (
-    <Stack className="auth-container" direction='column' spacing={0} alignItems='center' sx={{ maxWidth: 400, mx: "auto"}}>
+    <Stack className="auth-container" direction='column' spacing={0} alignItems='center' sx={{ maxWidth: 400, mx: "auto", height: 'fit-content'}}>
         <Typography variant="h5" sx={{ fontWeight: 500, color: "#fff" }}>Log in to</Typography>
         <FullTitleElement />
         <Typography variant="h5" sx={{ fontWeight: 500, color: "#fff" }}>Account</Typography>
@@ -65,10 +66,12 @@ const LoginForm = () => {
           </Button>
         </Form>
       </Formik>
-        <Button fullWidth variant="contained" sx={{backgroundColor: '#fff', my: 2}}>Continue with <Google color='secondary'sx={{marginLeft: '2px'}}/>oogle</Button>
-        <Link href="#" sx={{margin: '10px', alignSelf: 'start'}}>Forgot Password?</Link>
+        <Button fullWidth variant="contained" sx={{backgroundColor: '#fff', my: 2}}>Continue with <Google color='secondary'sx={{marginLeft: '2px', color: '#f00'}}/>oogle</Button>
+        <Link to="#" sx={{margin: '10px', alignSelf: 'start'}}><MUILink>Forgot Password?</MUILink></Link>
         <Divider sx={{width: '100%', color: '#fff', opacity: 1}}>Or</Divider>
-        <Link href={routePaths.register} sx={{margin: '10px', alignSelf: 'start'}}>Create Account Instead</Link>
+        <Link to='/auth/register/student'>
+          <MUILink>Create an account instead</MUILink>
+        </Link>
     </Stack>
   );
 };

@@ -16,6 +16,7 @@
 }
 
 /* Auth Pages */
+/* Background */
 .auth-bg {
   margin: auto;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -45,7 +46,7 @@
 }
 
 .wave {
-  background:rgba(47, 47, 47, 0.308);
+  background:rgba(47, 47, 47, 0.5);
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 200%;
@@ -92,6 +93,7 @@
   }
 }
 
+/* auth elements */
 .auth-container {
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: 10px;
@@ -120,4 +122,18 @@
 
 #registeration-options-links .active {
   background-color: #ffffff50;
+}
+
+/* email verification */
+.verification-container .vi__character {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white !important;
+  border-radius: 3px;
+  padding: 5px;
+  height: fit-content;
+}
+
+.verification-container .vi__character--selected {
+  outline: 2px solid var(--primary-color);
 }

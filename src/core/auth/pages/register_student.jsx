@@ -4,10 +4,12 @@ import {
     TextField,
   } from "@mui/material";
   import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
   import * as Yup from "yup";
 
 const StudentRegistrationForm = () => {
-    
+  const navigate = useNavigate();  
+
     return (
     <Formik
       initialValues={{
@@ -33,8 +35,8 @@ const StudentRegistrationForm = () => {
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
           // Handle form submission, e.g., sending data to server
-          console.log("Form values:", values);
           setSubmitting(false);
+          navigate("/auth/verify-email");
         }, 400);
       }}
     >

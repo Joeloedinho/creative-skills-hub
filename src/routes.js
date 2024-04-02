@@ -1,7 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import { AuthWrapper, ClientRegistrationForm, EditorRegistrationForm, LoginPage, Register, StudentRegistrationForm } from "./core/auth";
+import { AuthWrapper, ClientRegistrationForm, EditorRegistrationForm, EmailVerification, LoginPage, Register, StudentRegistrationForm } from "./core/auth";
 import { ErrorPage } from "./shared";
 import LandingPage from "./core/landing";
+import { StudentHomePage } from "./core/student";
+import { AdminHomePage } from "./core/admin";
+import { EditorHomePage } from "./core/editor";
+import { ClientHomePage } from "./core/client";
 
 const routes = createBrowserRouter([
     {
@@ -39,10 +43,30 @@ const routes = createBrowserRouter([
                     {
                         path: 'client',
                         element: <ClientRegistrationForm />
-                    }
+                    },
                 ]
             },
+            {
+                path: 'verify-email',
+                element: <EmailVerification />
+            }
         ]
+    },
+    {
+        path: 'student',
+        element: <StudentHomePage />
+    },
+    {
+        path: 'admin',
+        element: <AdminHomePage />
+    },
+    {
+        path: "editor",
+        element: <EditorHomePage />
+    },
+    {
+        path: "client",
+        element: <ClientHomePage />
     },
     {
         path: "/*",

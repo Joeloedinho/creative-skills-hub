@@ -72,6 +72,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 ### Deployment
 
 
+
+
 # 2. Getting Started with node js and mongo db
 
 download mongodb server: https://www.mongodb.com/try/download/community
@@ -85,7 +87,12 @@ after installation:
 
 add both the binary file location of mongodb server and mongodb shell to system paths under enviroment variables:
 
-both paths to be added to system path should look like this "C:\Program Files\MongoDB\Server\7.0\bin"  "C:\Program Files\mongosh-2.2.2-win32-x64\mongosh-2.2.2-win32-x64\bin".
+![ini](https://github.com/MLesky/Creative-Skills-Hub/assets/123896407/e741de18-7610-4c04-ada7-ef667b126cfc)
+
+click on new and paste the your binary path of mongodb server then do same for mongosh
+
+
+both paths to be added to system path should look like this "C:\Program Files\MongoDB\Server\7.0\bin" and "C:\Program Files\mongosh-2.2.2-win32-x64\mongosh-2.2.2-win32-x64\bin".
 
 
 to start mongodb server, open terminal on windows and enter the command:
@@ -103,11 +110,14 @@ first get to the backend folder with:
 
 ### `cd backend`
 
-initialize node js in the folder and install neccessary dependencies
+initialize node js in the folder  
 
 ### `npm init -y`
 
+install neccessary dependencies
+
 ### `npm install express mongoose body-parser axios dotenv cors bcrypt`
+
 
 express for the server framework.
 
@@ -124,9 +134,12 @@ cors for Cross-Origin Resource Sharing(since frontend and backend server are run
 bcrypt for hashing and salting passwords.
 
 
+
 finally start your node js server on a different terminal in your code editor since react is already running in the other terminal
 
+
 ### `node auth-server.js`
+
 
 Open [http://localhost:3000](http://localhost:4000) to view it in your browser.
 

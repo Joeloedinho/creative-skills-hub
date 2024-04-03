@@ -104,16 +104,25 @@ first get to the backend folder with:
 ### `cd backend`
 
 initialize node js in the folder and install neccessary dependencies
+
 ### `npm init -y`
+
 ### `npm install express mongoose body-parser axios dotenv cors bcrypt`
 
 express for the server framework.
+
 mongoose for MongoDB interactions.
+
 body-parser to parse incoming request bodies.
+
 axios for making HTTP requests (for email verification).
+
 dotenv to manage environment variables.
+
 cors for Cross-Origin Resource Sharing(since frontend and backend server are running on different ports).
+
 bcrypt for hashing and salting passwords.
+
 
 finally start your node js server on a different terminal in your code editor since react is already running in the other terminal
 

@@ -6,6 +6,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
+
+to be able to make http request to the server install axios by running:
+
+### `npm install axios`
+
+then:
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -65,8 +73,45 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 
 # 2. Getting Started with node js and mongo db
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+download mongodb server: https://www.mongodb.com/try/download/community
+download mongodbshell: https://www.mongodb.com/try/download/shell
+optional download mongodb compass(GUI): https://www.mongodb.com/try/download/compass
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+after installation:
+add both the binary file location of mongodb server and mongodb shell to system paths under enviroment variables
+both paths to be added to system path should look like this "C:\Program Files\MongoDB\Server\7.0\bin"  "C:\Program Files\mongosh-2.2.2-win32-x64\mongosh-2.2.2-win32-x64\bin"
+
+to start mongodb server, open terminal on windows and enter the command;
+
+### `mongod --dbpath="C:\Program Files\MongoDB\Server\7.0"
+
+once mongo server is running connect it to mongoshell by opening a new terminal and entering the command
+### `mongosh
+
+NOW MONGOSERVER AND MONGOSH ARE RUNNING YOU CAN HEAD TO THE PROJECT FOLDER IN YOUR CODE EDITOR
+
+first get to the backend folder with
+### `cd backend
+
+initialize node js in the folder and install neccessary dependencies
+### `npm init -y
+### `npm install express mongoose body-parser axios dotenv cors bcrypt
+
+express for the server framework.
+mongoose for MongoDB interactions.
+body-parser to parse incoming request bodies.
+axios for making HTTP requests (for email verification).
+dotenv to manage environment variables
+cors for Cross-Origin Resource Sharing(since frontend and backend server are running on different ports)
+bcrypt for hashing and salting passwords.
+
+finally start your node js server on a different terminal in your code editor since react is already running in the other terminal
+
+### `node auth-server.js
+
+
+
+
+
+

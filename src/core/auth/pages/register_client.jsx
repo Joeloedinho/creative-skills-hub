@@ -54,7 +54,7 @@ const ClientRegistrationForm = () => {
           sx={{ margin: "10px 0" }}
           helperText={<ErrorMessage name="clientType" />}
         >
-          <MenuItem value="" selected>Individual or Organisation</MenuItem>
+          <MenuItem value="" disabled>Individual or Organisation</MenuItem>
           <MenuItem value="beginner">Individual</MenuItem>
           <MenuItem value="amateur">Organisation</MenuItem>
         </Field>
@@ -95,7 +95,7 @@ const ClientRegistrationForm = () => {
         />
         <Field
           name="website"
-          type="text"
+          type="url"
           as={TextField}
           fullWidth
           id="website"

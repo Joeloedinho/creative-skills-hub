@@ -66,7 +66,7 @@ const StudentRegistrationForm = () => {
           sx={{ margin: "10px 0" }}
           helperText={<ErrorMessage name="gender" />}
         >
-          <MenuItem value="" selected>Select gender</MenuItem>
+          <MenuItem value="" disabled>Select gender</MenuItem>
           <MenuItem value="male">Male</MenuItem>
           <MenuItem value="female">Female</MenuItem>
           <MenuItem value="other">Other</MenuItem>

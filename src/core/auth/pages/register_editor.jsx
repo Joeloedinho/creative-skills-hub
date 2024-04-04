@@ -41,6 +41,7 @@ const EditorRegistrationForm = () => {
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             // Handle form submission, e.g., sending data to server
+            console.log("Submitting")
             setSubmitting(false);
             navigate("/auth/verify-email");
           }, 400);
@@ -59,7 +60,24 @@ const EditorRegistrationForm = () => {
             sx={{ margin: "10px 0" }}
             helperText={<ErrorMessage name="fullname" />}
           />
-    
+          <Field
+          name="gender"
+          type="text"
+          as={TextField}
+          select
+          fullWidth
+          id="gender"
+          size="small"
+          label="Select gender"
+          variant="outlined"
+          sx={{ margin: "10px 0" }}
+          helperText={<ErrorMessage name="gender" />}
+        >
+          <MenuItem value="" disabled>Select gender</MenuItem>
+          <MenuItem value="male">Male</MenuItem>
+          <MenuItem value="female">Female</MenuItem>
+          <MenuItem value="other">Other</MenuItem>
+        </Field>
           <Field
             name="skillLevel"
             type="text"
@@ -73,7 +91,7 @@ const EditorRegistrationForm = () => {
             sx={{ margin: "10px 0" }}
             helperText={<ErrorMessage name="skillLevel" />}
           >
-            <MenuItem value="" selected>Select Skill level</MenuItem>
+            <MenuItem value="" disabled>Select Skill level</MenuItem>
             <MenuItem value="beginner">Beginner</MenuItem>
             <MenuItem value="amateur">Amateur</MenuItem>
             <MenuItem value="professional">Professional</MenuItem>

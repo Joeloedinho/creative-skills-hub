@@ -6,6 +6,7 @@ import {
   import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
   import * as Yup from "yup";
+  import axios from 'axios';
 
 const ClientRegistrationForm = () => {
     const navigate = useNavigate()
@@ -34,11 +35,28 @@ const ClientRegistrationForm = () => {
           .required("Password is required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          // Handle form submission, e.g., sending data to server
-          setSubmitting(false);
-          navigate("/auth/verify-email");
-        }, 400);
+  
+        console.log("Form values:", values);
+
+        axios.post('http://localhost:4000/clients/register_client', values, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          console.log("Registration response:", response.data);
+          
+          // Navigate to verification page and pass along the email as state
+          navigate("/auth/verify-email", { state: { email: values.email, userType: 'client' } });
+
+        })
+        .catch(error => {
+          console.error("Registration failed:", error);
+          alert("Registration failed. Please try again.");
+        })
+        .finally(() => {
+          setSubmitting(false); // Ensures the form is no longer in a submitting state
+        });
       }}
     >
       <Form className="auth-form" id="client-form">
@@ -54,7 +72,7 @@ const ClientRegistrationForm = () => {
           sx={{ margin: "10px 0" }}
           helperText={<ErrorMessage name="clientType" />}
         >
-          <MenuItem value="" disabled>Individual or Organisation</MenuItem>
+          <MenuItem value="" selected>Individual or Organisation</MenuItem>
           <MenuItem value="beginner">Individual</MenuItem>
           <MenuItem value="amateur">Organisation</MenuItem>
         </Field>
@@ -95,7 +113,7 @@ const ClientRegistrationForm = () => {
         />
         <Field
           name="website"
-          type="url"
+          type="text"
           as={TextField}
           fullWidth
           id="website"

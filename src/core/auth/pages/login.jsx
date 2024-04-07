@@ -93,7 +93,7 @@ const LoginForm = () => {
         <Google color="secondary" sx={{ marginLeft: "2px", color: "#f00" }} />
         oogle
       </Button>
-      <Link to="#" sx={{ margin: "10px", alignSelf: "start" }}>
+      <Link to="/auth/forgot-password" sx={{ margin: "10px", alignSelf: "start" }}>
         <MUILink>Forgot Password?</MUILink>
       </Link>
       <Divider sx={{ width: "100%", color: "#fff", opacity: 1 }}>Or</Divider>

@@ -110,7 +110,7 @@ const LoginForm = () => {
           Continue with Google
         </Button>
       </Box>
-      <MUILink component={Link} to="#" sx={{ margin: "10px", alignSelf: "start" }}>
+      <MUILink component={Link} to="/auth/forgot-password" sx={{ margin: "10px", alignSelf: "start" }}>
         Forgot Password?
       </MUILink>
       <Divider sx={{ width: "100%", color: "#fff", opacity: 1, my: 2 }}>Or</Divider>

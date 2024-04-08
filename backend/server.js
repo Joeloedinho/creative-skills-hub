@@ -6,6 +6,7 @@ const studentRouter = require('./studentRoutes');
 const editorRouter = require('./editorRoutes');
 const clientRouter = require('./clientRoutes');
 const signInRoutes = require('./signInRoutes'); 
+const passwordResetRoutes = require('./passwordResetRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -21,6 +22,7 @@ app.use('/students', studentRouter);
 app.use('/editors', editorRouter);
 app.use('/clients', clientRouter);
 app.use('/login', signInRoutes);
+app.use('/auth', passwordResetRoutes);
 
 app.get('/', (req, res) => {
     console.log('Root path accessed.');
@@ -33,7 +35,7 @@ app.listen(PORT, () => {
     console.log('  /students/*');
     console.log('  /editors/*');
     console.log('  /clients/*');
-    console.log('  /login'); // Show that login route is registered
+    console.log('  /login'); 
 });
 
 app.use('*', (req, res) => {

@@ -6,9 +6,12 @@ import * as Yup from 'yup';
 import { FullTitleElement } from '../../../shared';
 import VerificationInput from 'react-verification-input';
 
-export default function ForgotPassword(){
+import axios from 'axios';
+
+export default function ForgotPassword() {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+  const [email, setEmail] = useState('');
 
   return (
     <Stack
@@ -20,16 +23,16 @@ export default function ForgotPassword(){
     >
       <FullTitleElement />
       {[
-        <EnterEmail setIndex={setIndex} />,
-        <SelectAccount setIndex={setIndex} />,
-        <VerifyEmail setIndex={setIndex} />,
-        <ResetPassword />,
+        <EnterEmail key="enterEmail" setIndex={setIndex} setEmail={setEmail} />,
+        <SelectAccount key="selectAccount" setIndex={setIndex} email={email} />,
+        <VerifyEmail key="verifyEmail" setIndex={setIndex} email={email} />,
+        <ResetPassword key="resetPassword" email={email} navigate={navigate} />,
       ][index]}
     </Stack>
   );
 };
 
-const EnterEmail = ({ setIndex }) => {
+const EnterEmail = ({ setIndex, setEmail }) => { 
   return (
     <Stack>
       <Typography sx={{ color: '#fff' }}>Please enter the email your account is associated with</Typography>
@@ -41,10 +44,17 @@ const EnterEmail = ({ setIndex }) => {
           email: Yup.string().trim().email('Invalid email address').required('Email is required'),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            setIndex((prev) => prev + 1);
-          }, 400);
+          setEmail(values.email); 
+          axios.post('http://localhost:4000/auth/request_reset', { email: values.email })
+            .then(response => {
+              console.log(response.data.message);
+              setIndex((prev) => prev + 1); 
+            })
+            .catch(error => {
+              console.error('Error:', error.response.data.message);
+              alert('Error: ' + error.response.data.message); 
+            })
+            .finally(() => setSubmitting(false));
         }}
       >
         <Form className="auth-form" id="client-form" noValidate>
@@ -68,8 +78,7 @@ const EnterEmail = ({ setIndex }) => {
     </Stack>
   );
 };
-
-const SelectAccount = ({ setIndex }) => {
+const SelectAccount = ({ setIndex, email }) => {
   return (
     <Stack sx={{width: '100%'}}>
       <Typography sx={{ color: '#fff', mb: 2 }}>Select the account</Typography>
@@ -77,10 +86,10 @@ const SelectAccount = ({ setIndex }) => {
         <Button onClick={() => setIndex((prev) => prev + 1)} fullWidth>
           <Stack>
             <Typography variant="body1" align="left">
-              Mbah Lesky
+              Selected Account
             </Typography>
             <Typography variant="caption" align="left">
-              mbahlesky2@gmail.com
+              {email} {}
             </Typography>
           </Stack>
         </Button>
@@ -89,33 +98,38 @@ const SelectAccount = ({ setIndex }) => {
   );
 };
 
-const VerifyEmail = ({ setIndex }) => {
+const VerifyEmail = ({ setIndex, email }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  
   const handleChange = (value) => {
-    console.log(value);
-    setVerificationCode(value);
+    setVerificationCode(value); 
+    setErrorMessage(''); 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(verificationCode);
-    if (verificationCode === '') {
+    if (!verificationCode) {
       setErrorMessage('Please enter the verification code');
-    } else {
-      if (verificationCode === '123456') {
-        setIndex((prev) => prev + 1);
-        // Verification success
-      } else {
-        setErrorMessage('Please enter the correct verification code');
-      }
+      return;
     }
+    axios.post('http://localhost:4000/auth/verify_reset_code', { email, verificationCode })
+      .then(response => {
+        console.log(response.data.message);
+       
+        localStorage.setItem('resetToken', response.data.token); 
+        setIndex((prev) => prev + 1); 
+      })
+      .catch(error => {
+        console.error('Verification failed:', error.response.data.message);
+        setErrorMessage('Verification failed. Please try again.');
+      });
   };
 
   return (
     <Stack spacing={2}>
-      <Typography sx={{ color: '#fff' }}>Verify the email address you entered: johnmary@gmail.com</Typography>
+      <Typography sx={{ color: '#fff' }}>Verify the email address you entered: {email}</Typography>
       <form onSubmit={handleSubmit}>
         <VerificationInput
           onChange={(value) => handleChange(value)}
@@ -142,28 +156,29 @@ const VerifyEmail = ({ setIndex }) => {
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem('resetToken');
   return (
     <Stack>
-      <Typography sx={{ color: '#fff' }}>Change Password</Typography>
       <Formik
-        initialValues={{
-          password: '',
-          confirmPassword: '',
-        }}
-        validationSchema={Yup.object({
-          password: Yup.string().trim().min(8, 'Minimum length of password is 8 characters').required('Password is required'),
-          confirmPassword: Yup.string()
-            .trim()
-            .oneOf([Yup.ref('password'), null], "Password doesn't match")
-            .required('Re-type your password'),
-        })}
+        initialValues={{ password: '', confirmPassword: '' }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            navigate('/');
-          }, 400);
+      
+          axios.post('http://localhost:4000/auth/reset', { 
+            token, 
+            newPassword: values.password 
+          })
+          .then(response => {
+            console.log(response.data.message);
+            localStorage.removeItem('resetToken'); 
+            alert('password reset successful!! click ok to navigate to login page');
+            navigate('/auth/login');
+          })
+          .catch(error => {
+            console.error('Error resetting password:', error.response.data.message);
+          })
+          .finally(() => setSubmitting(false));
         }}
-      >
+        >
         <Form className="auth-form" noValidate>
           <Field
             name="password"

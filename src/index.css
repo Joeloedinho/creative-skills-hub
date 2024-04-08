@@ -121,7 +121,11 @@
 }
 
 #registeration-options-links .active {
-  background-color: #ffffff50;
+  background-color: var(--primary-color-dark);;
+}
+
+#registeration-options-links .active * {
+  color: white !important;
 }
 
 /* email verification */

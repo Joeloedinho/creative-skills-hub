@@ -7,12 +7,20 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from 'axios';
+import { useState } from "react";
+import { AlertPopper } from "../../../shared";
 
 const EditorRegistrationForm = () => {
-const navigate = useNavigate()  
+const navigate = useNavigate() 
+const [loginResponse, setLoginResponse] = useState({
+  show: false,
+  type: "success",
+  message: "",
+}); 
 
   return (
-      <Formik
+      <>
+        <Formik
       initialValues={{
         fullname: "",
         gender: "",
@@ -57,7 +65,12 @@ const navigate = useNavigate()
         })
         .catch(error => {
           console.error("Registration failed:", error);
-          alert("Registration failed. Please try again.");
+          // alert("Registration failed. Please try again.");
+          setLoginResponse({
+            show: true,
+            type: "error",
+            message: "Registration failed. Please try again.",
+          })
         })
         .finally(() => {
           setSubmitting(false); // Ensures the form is no longer in a submitting state
@@ -170,7 +183,14 @@ const navigate = useNavigate()
           Sign Up
         </Button>
       </Form>
-    </Formik>)
+    </Formik>
+    <AlertPopper
+    showAlert={loginResponse.show}
+    handleClose={() => setLoginResponse({ ...loginResponse, show: false })}
+    alertType={loginResponse.type}
+    children={loginResponse.message}
+  />
+      </>)
 }
 
 export default EditorRegistrationForm;

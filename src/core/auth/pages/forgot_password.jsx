@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Avatar, Badge, Button, Paper, Stack, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -19,6 +19,14 @@ export default function ForgotPassword(){
       sx={{ maxWidth: 800, mx: 'auto', height: 'fit-content' }}
     >
       <FullTitleElement />
+      <Typography variant='h5' color='#fff'>Forgot Password</Typography>
+      <Stepper activeStep={index} alternativeLabel={{xs: true, md: false}}>
+        {
+          ['Enter Email', 'Select Account', 'Verify Email', 'Reset Password'].map(label => <Step>
+            <StepLabel><Typography sx={{color: '#fff'}}>{label}</Typography></StepLabel>
+          </Step>)
+        }
+      </Stepper>
       {[
         <EnterEmail setIndex={setIndex} />,
         <SelectAccount setIndex={setIndex} />,
@@ -75,13 +83,16 @@ const SelectAccount = ({ setIndex }) => {
       <Typography sx={{ color: '#fff', mb: 2 }}>Select the account</Typography>
       <Paper sx={{backgroundColor: 'rgba(12, 56, 198, 0.15) !important'}}>
         <Button onClick={() => setIndex((prev) => prev + 1)} fullWidth>
-          <Stack>
-            <Typography variant="body1" align="left">
+          <Stack direction={'row'} spacing={1} alignItems='center'>
+            <Avatar>ML</Avatar>
+            <Stack>
+            <Typography variant="h6" align="left" sx={{color: '#fff'}}>
               Mbah Lesky
             </Typography>
-            <Typography variant="caption" align="left">
+            <Typography variant="caption" align="left" sx={{color: "#fff", textTransform: 'lowercase'}}>
               mbahlesky2@gmail.com
             </Typography>
+            </Stack>
           </Stack>
         </Button>
       </Paper>
@@ -171,7 +182,7 @@ const ResetPassword = () => {
             as={TextField}
             fullWidth
             id="password"
-            size="password"
+            size="small"
             label="Enter New Password"
             variant="outlined"
             sx={{ margin: '10px 0' }}
@@ -183,7 +194,7 @@ const ResetPassword = () => {
             as={TextField}
             fullWidth
             id="confirmPassword"
-            size="password"
+            size="small"
             label="Retype Password"
           variant="outlined"
           sx={{ margin: "10px 0" }}

@@ -8,7 +8,7 @@ const AuthWrapper = () => {
         display: "flex",
         justifyContent: "center",
         height: "100vh",
-        padding: 5,
+        padding: { xs: 1, sm: 2, md: 5 },
       }}
       className="auth-bg"
     >

@@ -30,7 +30,7 @@ async function sendVerificationEmail(email, verificationCode) {
             url: 'https://mail-sender-api1.p.rapidapi.com/',
             headers: {
                 'content-type': 'application/json',
-                'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, // You need to replace this with your actual RapidAPI Key
+                'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, 
                 'X-RapidAPI-Host': 'mail-sender-api1.p.rapidapi.com'
             },
             data: JSON.stringify(data)

@@ -45,16 +45,17 @@ const EnterEmail = ({ setIndex, setEmail }) => {
         })}
         onSubmit={(values, { setSubmitting }) => {
           setEmail(values.email); 
-          axios.post('http://localhost:4000/auth/request_reset', { email: values.email })
-            .then(response => {
-              console.log(response.data.message);
+          // axios.post('http://localhost:4000/auth/request_reset', { email: values.email })
+          //   .then(response => {
+          //     console.log(response.data.message);
               setIndex((prev) => prev + 1); 
-            })
-            .catch(error => {
-              console.error('Error:', error.response.data.message);
-              alert('Error: ' + error.response.data.message); 
-            })
-            .finally(() => setSubmitting(false));
+            // })
+            // .catch(error => {
+            //   console.error('Error:', error.response.data.message);
+            //   alert('Error: ' + error.response.data.message); 
+            // })
+            // .finally(() => setSubmitting(false));
+            setSubmitting(false);
         }}
       >
         <Form className="auth-form" id="client-form" noValidate>
@@ -114,17 +115,17 @@ const VerifyEmail = ({ setIndex, email }) => {
       setErrorMessage('Please enter the verification code');
       return;
     }
-    axios.post('http://localhost:4000/auth/verify_reset_code', { email, verificationCode })
-      .then(response => {
-        console.log(response.data.message);
+    // axios.post('http://localhost:4000/auth/verify_reset_code', { email, verificationCode })
+    //   .then(response => {
+    //     console.log(response.data.message);
        
-        localStorage.setItem('resetToken', response.data.token); 
+    //     localStorage.setItem('resetToken', response.data.token); 
         setIndex((prev) => prev + 1); 
-      })
-      .catch(error => {
-        console.error('Verification failed:', error.response.data.message);
-        setErrorMessage('Verification failed. Please try again.');
-      });
+      // })
+      // .catch(error => {
+      //   console.error('Verification failed:', error.response.data.message);
+      //   setErrorMessage('Verification failed. Please try again.');
+      // });
   };
 
   return (

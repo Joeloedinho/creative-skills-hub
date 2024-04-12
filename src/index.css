@@ -13,6 +13,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Auth Pages */
@@ -140,4 +141,9 @@
 
 .verification-container .vi__character--selected {
   outline: 2px solid var(--primary-color);
+}
+
+/* course card */
+.course-card:hover {
+  scale: 1.1;
 }

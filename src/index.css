@@ -147,3 +147,12 @@
 .course-card:hover {
   scale: 1.1;
 }
+
+.course-card * {
+  text-decoration: none;
+}
+
+.project-card:hover  {
+  background-color: #d5d5d5;
+  cursor: pointer;
+}

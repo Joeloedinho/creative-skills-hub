@@ -7,11 +7,10 @@ const style = {
     fontSize : 14,
 }
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ id, course }) => {
   return course !== null ? (
-    <Card sx={{ display: "block"}} className='course-card'>
-      <Link to={`/course/${course.title}`}>
-      <Stack sx={{ width: 250, height: "fit-content" }}>
+    <Card sx={{ width: 250, margin: 2 }} className='course-card'>
+      <Link to={`/course/${id}`}>
         <Stack
           justifyContent="end"
           sx={{
@@ -59,7 +58,6 @@ const CourseCard = ({ course }) => {
           <Typography sx={style}>{course.price}</Typography>
         </Stack>
         </Stack>
-      </Stack>
       </Link>
     </Card>
   ) : null;

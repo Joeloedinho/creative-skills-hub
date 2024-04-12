@@ -1,13 +1,14 @@
 import { Circle, Search } from "@mui/icons-material";
-import { Button, InputAdornment, Paper, Stack, TextField } from "@mui/material";
+import { Box, Button, InputAdornment, Paper, Stack, TextField } from "@mui/material";
 import React from "react";
 import { FullTitleElement } from "../../shared/components/title";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import LandingPage from "./landing";
+import { Footer } from "../../shared";
 
 export default function LandingNavbar() {
   return (
-    <Stack>
+    <Stack sx={{height: '100vh'}}>
       <Paper elevation={2} sx={{ padding: "15px 30px" }}>
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="row" alignItems="center">
@@ -54,7 +55,10 @@ export default function LandingNavbar() {
         </Stack>
       </Stack>
     </Paper>
-    <Outlet style={{flexGrow: 1}}/>
+    <Box style={{flexGrow: 1}}>
+      <Outlet />
+    </Box>
+    <Footer />
     </Stack>
   );
 }

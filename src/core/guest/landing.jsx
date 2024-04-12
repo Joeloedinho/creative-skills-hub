@@ -1,11 +1,25 @@
 import { Link, Outlet } from "react-router-dom";
-import { Box, Button, Divider, MobileStepper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  MobileStepper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import LandingNavbar from "./landing_navbar";
 import { useEffect, useState } from "react";
 import * as Assets from "../../assets";
-import { CourseGroup, FullTitleElement } from "../../shared";
+import {
+  CourseGroup,
+  FullTitleElement,
+  ProjectGroup,
+  ReviewCard,
+} from "../../shared";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { courses } from '../../temp/courses';
+import { courses } from "../../temp/courses";
+import { projects } from "../../temp/projects";
+import { reviews } from "../../temp/reviews";
 
 const roles = [
   {
@@ -43,6 +57,8 @@ const LandingPage = () => {
       setActiveStep(0);
     }
   };
+
+  // TODO: Automatic flow of roles
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -99,39 +115,70 @@ const LandingPage = () => {
   ));
 
   return (
-    <Stack spacing={2} sx={{width: {xs: '100%', md: '95%', lg: '90%'}, marginX: 'auto', maxWidth: 1500, overflow: 'auto',}}>
-      {/* <Stack>
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 1200,
-          padding: { xs: 1, sm: 2, md: 4 },
-          position: "relative",
-          maxHeight: 800,
-          marginX: "auto",
-        }}
-      >
-        {carousel[activeStep]}
-        <MobileStepper
-          steps={maxSteps}
-          position="static"
-          activeStep={activeStep}
-          nextButton={
-            <Button size="small" onClick={handleNext}>
-              Next <KeyboardArrowRight />
-            </Button>
-          }
-          backButton={
-            <Button size="small" onClick={handleBack}>
-              Prev <KeyboardArrowLeft />
-            </Button>
-          }
-        />
-      </Box>
-      </Stack> */}
-      <Divider />
+    <Stack
+      spacing={2}
+      sx={{
+        height: "100%",
+        width: { xs: "100%", lg: "95%" },
+        marginX: "auto",
+        overflow: "auto",
+      }}
+    >
       <Stack>
-          <CourseGroup title="For Beginners" courses={courses} />
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: 1200,
+            padding: { xs: 1, sm: 2, md: 4 },
+            position: "relative",
+            maxHeight: 800,
+            marginX: "auto",
+          }}
+        >
+          {carousel[activeStep]}
+          <MobileStepper
+            steps={maxSteps}
+            position="static"
+            activeStep={activeStep}
+            nextButton={
+              <Button size="small" onClick={handleNext}>
+                Next <KeyboardArrowRight />
+              </Button>
+            }
+            backButton={
+              <Button size="small" onClick={handleBack}>
+                Prev <KeyboardArrowLeft />
+              </Button>
+            }
+          />
+        </Box>
+      </Stack>
+      <Stack spacing={2} sx={{padding: 2}}>
+        <Divider />
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          COURSES
+        </Typography>
+        {/* <CourseGroup title="For Beginners" courses={courses} /> */}
+        <Divider />
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          PROJECTS
+        </Typography>
+        <ProjectGroup projects={projects} />
+        <Divider />
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          REVIEWS
+        </Typography>
+        <Stack
+          spacing={2}
+          direction="flex"
+          justifyContent="space-around"
+          flexWrap="wrap"
+          sx={{ overflowX: "auto", overflowY: "visible", paddingY: 2 }}
+        >
+          {reviews.map((review) => (
+            <ReviewCard review={review} />
+          ))}
+        </Stack>
       </Stack>
     </Stack>
   );

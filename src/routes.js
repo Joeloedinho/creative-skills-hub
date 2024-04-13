@@ -1,16 +1,22 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { AuthWrapper, ClientRegistrationForm, EditorRegistrationForm, EmailVerification, ForgotPassword, LoginPage, Register, StudentRegistrationForm } from "./core/auth";
 import { ErrorPage } from "./shared";
-import LandingPage from "./core/landing";
 import { StudentHomePage } from "./core/student";
 import { AdminHomePage } from "./core/admin";
 import { EditorHomePage } from "./core/editor";
 import { ClientHomePage } from "./core/client";
+import { LandingNavbar, LandingPage } from "./core/guest";
 
 const routes = createBrowserRouter([
     {
-        path: '',
-        element: <LandingPage />
+        path: '/',
+        element: <LandingNavbar />,
+        children: [
+            {
+                path: '',
+                element: <LandingPage />,
+            }
+        ]
     },
     {
         path: 'auth',

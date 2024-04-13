@@ -1,5 +1,11 @@
 import AlertPopper from './components/alert_popper';
 import ErrorPage from './pages/error';
+import CourseCard from './components/course_card';
+import CourseGroup from './components/course_group';
+import ProjectGroup from './components/project_group';
+import ProjectCard from './components/project_card';
+import ReviewCard from './components/review_card';
+import Footer from './components/footer';
 export * from './components/title';
 export * from './theme';
-export { ErrorPage, AlertPopper };
+export { ErrorPage, AlertPopper, CourseCard, CourseGroup, ProjectCard, ProjectGroup, ReviewCard, Footer };

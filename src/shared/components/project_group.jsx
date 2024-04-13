@@ -1,4 +1,4 @@
-import { Divider, Stack, Typography, Button, IconButton, Box } from "@mui/material";
+import { Divider, Stack, Typography, Button, IconButton, Box, Grid } from "@mui/material";
 import { useRef } from "react";
 import { ArrowCircleLeft, ArrowCircleRight, } from "@mui/icons-material";
 import ProjectCard from "./project_card";
@@ -6,11 +6,11 @@ import ProjectCard from "./project_card";
 const ProjectGroup = ({projects = [] }) => {
 
   return (
-      <Stack justifyContent='center' spacing={1}>
+      <Grid container alignItems='center' spacing={1} flexWrap='wrap'>
           {projects.map((project, index) => (
-            <ProjectCard id={index} project={project} />
+            <ProjectCard key={index} id={index} project={project} />
           ))}
-      </Stack>
+      </Grid>
   );
 };
 

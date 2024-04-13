@@ -1,5 +1,5 @@
 import { Favorite, LocalOffer, Person, Tag } from "@mui/icons-material";
-import { Box, Card, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Box, Card, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const style = {
@@ -11,7 +11,7 @@ const style = {
 const ProjectCard = ({ id, project }) => {
   const navigate = useNavigate();
   return project !== null ? (
-    <Stack>
+    <Grid item xs={12} md={6} >
       <Divider />
       <Stack
         spacing={2}
@@ -43,7 +43,7 @@ const ProjectCard = ({ id, project }) => {
           ))}
         </Stack>
       </Stack>
-    </Stack>
+    </Grid>
   ) : null;
 };
 

@@ -23,7 +23,7 @@ const CourseGroup = ({ title = "", courses = [] }) => {
       <Stack direction="row" spacing={2} sx={{ overflowY: 'visible', overflowX: "auto", height: 'fit-content', paddingY: 2, position: 'relative' }}>
         <div ref={scrollContainerRef} style={{ display: 'flex' }}>
           {courses.map((course, index) => (
-            <CourseCard id={index} course={course} />
+            <CourseCard key={index} id={index} course={course} />
           ))}
         </div>
       </Stack>

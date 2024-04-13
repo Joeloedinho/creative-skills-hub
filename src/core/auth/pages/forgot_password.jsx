@@ -3,7 +3,7 @@ import { Avatar, Badge, Button, Paper, Stack, Step, StepLabel, Stepper, TextFiel
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { FullTitleElement } from '../../../shared';
+import { AlertPopper, FullTitleElement } from '../../../shared';
 import VerificationInput from 'react-verification-input';
 
 import axios from 'axios';
@@ -12,6 +12,12 @@ export default function ForgotPassword() {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [email, setEmail] = useState('');
+  const [processResponse, setProcessResponse] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
+
 
   return (
     <Stack
@@ -30,16 +36,17 @@ export default function ForgotPassword() {
         }
       </Stepper>
       {[
-        <EnterEmail key="enterEmail" setIndex={setIndex} setEmail={setEmail} />,
+        <EnterEmail key="enterEmail" setIndex={setIndex} setEmail={setEmail} setResponse={setProcessResponse}/>,
         <SelectAccount key="selectAccount" setIndex={setIndex} email={email} />,
         <VerifyEmail key="verifyEmail" setIndex={setIndex} email={email} />,
-        <ResetPassword key="resetPassword" email={email} navigate={navigate} />,
+        <ResetPassword key="resetPassword" email={email} navigate={navigate} setResponse={setProcessResponse}/>,
       ][index]}
+      <AlertPopper showAlert={processResponse.show} handleClose={() => setProcessResponse({...processResponse, show: false})} alertType={processResponse.type}>{processResponse.message}</AlertPopper>
     </Stack>
   );
 };
 
-const EnterEmail = ({ setIndex, setEmail }) => { 
+const EnterEmail = ({ setIndex, setEmail, setResponse }) => { 
   return (
     <Stack>
       <Typography sx={{ color: '#fff' }}>Please enter the email your account is associated with</Typography>
@@ -59,7 +66,12 @@ const EnterEmail = ({ setIndex, setEmail }) => {
             })
             .catch(error => {
               console.error('Error:', error.response.data.message);
-              alert('Error: ' + error.response.data.message); 
+              // alert('Error: ' + error.response.data.message); 
+              setResponse({
+                type: 'error',
+                show: true,
+                message: 'Error: ' + error.response.data.message,
+              })
             })
             .finally(() => setSubmitting(false));
         }}
@@ -161,7 +173,7 @@ const VerifyEmail = ({ setIndex, email }) => {
   );
 };
 
-const ResetPassword = () => {
+const ResetPassword = ({response, setResponse}) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('resetToken');
   return (
@@ -177,11 +189,24 @@ const ResetPassword = () => {
           .then(response => {
             console.log(response.data.message);
             localStorage.removeItem('resetToken'); 
-            alert('password reset successful!! click ok to navigate to login page');
-            navigate('/auth/login');
+            // alert('password reset successful!! click ok to navigate to login page');
+            setResponse({
+              type: 'success',
+              show: 'true',
+              message: 'password reset successful',
+            })
+            setTimeout(() => {
+              setResponse(prev => ({...prev, show: false}))
+              navigate('/auth/login');
+            }, 1000)
           })
           .catch(error => {
             console.error('Error resetting password:', error.response.data.message);
+            setResponse({
+              type: 'error',
+              show: 'error',
+              message: 'Error resetting password: ' + error.response.data.message,
+            })
           })
           .finally(() => setSubmitting(false));
         }}

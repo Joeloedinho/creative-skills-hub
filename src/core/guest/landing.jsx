@@ -158,7 +158,7 @@ const LandingPage = () => {
         <Typography variant="h5" color="primary" fontWeight="bold">
           COURSES
         </Typography>
-        {/* <CourseGroup title="For Beginners" courses={courses} /> */}
+        <CourseGroup title="For Beginners" courses={courses} />
         <Divider />
         <Typography variant="h5" color="primary" fontWeight="bold">
           PROJECTS
@@ -170,13 +170,13 @@ const LandingPage = () => {
         </Typography>
         <Stack
           spacing={2}
-          direction="flex"
+          direction="row"
           justifyContent="space-around"
           flexWrap="wrap"
           sx={{ overflowX: "auto", overflowY: "visible", paddingY: 2 }}
         >
-          {reviews.map((review) => (
-            <ReviewCard review={review} />
+          {reviews.map((review, index) => (
+            <ReviewCard key={index} review={review} />
           ))}
         </Stack>
       </Stack>

@@ -3,14 +3,17 @@ import { useRef } from "react";
 import { ArrowCircleLeft, ArrowCircleRight, } from "@mui/icons-material";
 import ProjectCard from "./project_card";
 
-const ProjectGroup = ({projects = [] }) => {
+const ProjectGroup = ({projects = [], title }) => {
 
   return (
-      <Grid container alignItems='center' spacing={1} flexWrap='wrap'>
+      <>
+      <Typography variant='h5' fontWeight='bold'>{title}</Typography>
+        <Grid container alignItems='center' spacing={1} flexWrap='wrap'>
           {projects.map((project, index) => (
             <ProjectCard key={index} id={index} project={project} />
           ))}
       </Grid>
+      </>
   );
 };
 

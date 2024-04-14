@@ -1,5 +1,5 @@
 import { Favorite, LocalOffer, Person, Tag } from "@mui/icons-material";
-import { Box, Card, Stack, Typography } from "@mui/material";
+import { Box, Card, LinearProgress, Stack, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const style = {
@@ -7,7 +7,7 @@ const style = {
     fontSize : 14,
 }
 
-const CourseCard = ({ id, course }) => {
+const EnrolledCourseCard = ({ id, course }) => {
   const navigate = useNavigate()
   return course !== null ? (
     <Card sx={{ width: 250, margin: 2, paddingBottom: 1 }} className='course-card' onClick={() => navigate(`/course/${id}`)}>
@@ -53,13 +53,10 @@ const CourseCard = ({ id, course }) => {
             <Typography sx={style}>{course.enrolled}</Typography>
           </Stack>
         </Stack>
-        <Stack spacing={1} direction="row" alignItems='center' sx={{paddingX: 2, ...style}}>
-          <LocalOffer color="primary" />
-          <Typography sx={style}>{course.price}</Typography>
-        </Stack>
+        <LinearProgress variant="determinate" value={50} />
         </Stack>
     </Card>
   ) : null;
 };
 
-export default CourseCard;
+export default EnrolledCourseCard;

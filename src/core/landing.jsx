@@ -6,20 +6,22 @@ import {
   MobileStepper,
   Stack,
   Typography,
-} from "@mui/material";
-import LandingNavbar from "./landing_navbar";
+  useTheme,
+} from "@mui/material"
 import { useEffect, useState } from "react";
-import * as Assets from "../../assets";
+import * as Assets from "../assets";
 import {
   CourseGroup,
+  Footer,
   FullTitleElement,
+  LandingNavbar,
   ProjectGroup,
   ReviewCard,
-} from "../../shared";
+} from "../shared";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { courses } from "../../temp/courses";
-import { projects } from "../../temp/projects";
-import { reviews } from "../../temp/reviews";
+import { courses } from "../temp/courses";
+import { projects } from "../temp/projects";
+import { reviews } from "../temp/reviews";
 
 const roles = [
   {
@@ -51,6 +53,10 @@ const roles = [
 const LandingPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = roles.length;
+
+  const theme = useTheme()
+  console.log('Theme: ', theme);
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep >= maxSteps - 1) {
@@ -66,6 +72,8 @@ const LandingPage = () => {
       setActiveStep(maxSteps - 1);
     }
   };
+
+  // TODO: Sweapeble carousel
 
   const carousel = roles.map((role) => (
     <Stack
@@ -115,10 +123,15 @@ const LandingPage = () => {
   ));
 
   return (
-    <Stack
+    <Box sx={{
+      backgroundColor: theme.palette.background.default
+    }}>
+      <LandingNavbar />
+      {/* Body */}
+      <Stack
       spacing={2}
       sx={{
-        height: "100%",
+        flexGrow: 1,
         width: { xs: "100%", lg: "95%" },
         marginX: "auto",
         overflow: "auto",
@@ -181,6 +194,8 @@ const LandingPage = () => {
         </Stack>
       </Stack>
     </Stack>
+    <Footer />
+    </Box>
   );
 };
 

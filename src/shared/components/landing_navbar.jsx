@@ -1,15 +1,13 @@
 import { Circle, Search } from "@mui/icons-material";
 import { Box, Button, InputAdornment, Paper, Stack, TextField } from "@mui/material";
 import React from "react";
-import { FullTitleElement } from "../../shared/components/title";
+import { FullTitleElement } from "./title";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import LandingPage from "./landing";
-import { Footer } from "../../shared";
 
+// TOD0: Disappearing navbar
 export default function LandingNavbar() {
   return (
-    <Stack sx={{height: '100vh'}}>
-      <Paper elevation={2} sx={{ padding: "15px 30px" }}>
+      <Paper elevation={2} sx={{ padding: "5px 15px", position: 'sticky', top: 0, zIndex: 1 }}>
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="row" alignItems="center">
           <Circle sx={{ fontSize: 30 }} />
@@ -55,10 +53,5 @@ export default function LandingNavbar() {
         </Stack>
       </Stack>
     </Paper>
-    <Box style={{flexGrow: 1}}>
-      <Outlet />
-    </Box>
-    <Footer />
-    </Stack>
   );
 }

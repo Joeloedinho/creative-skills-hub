@@ -146,6 +146,7 @@
 /* course card */
 .course-card:hover {
   scale: 1.1;
+  cursor: pointer;
 }
 
 .course-card * {
@@ -153,6 +154,6 @@
 }
 
 .project-card:hover  {
-  background-color: #d5d5d5;
+  background-color: #85858574;
   cursor: pointer;
 }

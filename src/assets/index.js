@@ -2,7 +2,7 @@ import happyMan from './images/happy-man.png';
 import editorWorkspace from './images/editor-workspace.jpg';
 import studentWorkspace from './images/table-laptop.jpg';
 import clientWorkspace from './images/business-meeting.jpg';
-import courseCardImg from './images/course_img.jpg';
+import courseCardImg from './images/course_img.png';
 import DiscordIcon from './icons/discord_5968756.png';
 import YoutubeIcon from './icons/youtube.png';
 import TwitterIcons from './icons/twitter_3670151.png';

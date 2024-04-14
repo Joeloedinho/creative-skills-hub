@@ -2,9 +2,8 @@ import { Divider, Stack, Typography, Button, IconButton, Box } from "@mui/materi
 import CourseCard from "./course_card";
 import { useRef } from "react";
 import { ArrowCircleLeft, ArrowCircleRight, } from "@mui/icons-material";
-import EnrolledCourseCard from "./enrolled_course_card";
 
-const CourseGroup = ({ title = "", courses = [], enrolledList = false }) => {
+const CatergoryList = ({ title = "", catergories = [] }) => {
   const scrollContainerRef = useRef();
 
   // TODO: Fix scrolling
@@ -23,9 +22,8 @@ const CourseGroup = ({ title = "", courses = [], enrolledList = false }) => {
       <Box><IconButton onClick={() => handleScroll(-100)}><ArrowCircleLeft  sx={{fontSize: 50}}/></IconButton></Box>
       <Stack direction="row" spacing={2} sx={{ overflowY: 'visible', overflowX: "auto", height: 'fit-content', paddingY: 2, position: 'relative' }}>
         <div ref={scrollContainerRef} style={{ display: 'flex' }}>
-          {courses.map((course, index) => (
-            enrolledList ? <EnrolledCourseCard key={index} id={index} course={course} /> :
-            <CourseCard key={index} id={index} course={course} />
+          {catergories.map((category, index) => (
+            <Button variant='outlined' sx={{margin: 2}}>category</Button>
           ))}
         </div>
       </Stack>
@@ -35,4 +33,4 @@ const CourseGroup = ({ title = "", courses = [], enrolledList = false }) => {
   );
 };
 
-export default CourseGroup;
+export default CatergoryList;

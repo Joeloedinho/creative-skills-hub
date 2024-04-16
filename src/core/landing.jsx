@@ -51,6 +51,11 @@ const roles = [
 ];
 
 const LandingPage = () => {
+  // const { courses, isFetchingCourses, coursesFetchError} = useFetch('url');
+  // const { projects, isFetchingProjects, projectsFetchError } = useFetch('url');
+  // const { catergories, isFetchingCaterogories, catergoriesFetchError} = useFetch('url');
+  // const { reviews, isFetchingReviews, reviewsFetchError } = useFetch("url");
+
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = roles.length;
 

@@ -4,8 +4,13 @@ import { happyMan } from "../../../assets";
 import { CatergoryList, CourseGroup, ProjectGroup } from "../../../shared";
 import { courses } from "../../../temp/courses";
 import { projects } from "../../../temp/projects";
+import { useFetch } from "../../../hooks";
 
 export default function StudentHomePage() {
+  // const { courses, isFetchingCourses, coursesFetchError} = useFetch('url');
+  // const { projects, isFetchingProjects, projectsFetchError } = useFetch('url');
+  // const { catergories, isFetchingCaterogories, catergoriesFetchError} = useFetch('url');
+
   return (
     <Box
       sx={{
@@ -13,6 +18,7 @@ export default function StudentHomePage() {
         padding: 1,
       }}
     >
+      <CatergoryList catergories={catergories}/>
       <Box
         sx={{
           width: "100%",
@@ -53,7 +59,6 @@ export default function StudentHomePage() {
           </Grid>
       </Box>
       <CourseGroup title='Continue Learning' courses={courses} enrolledList={true}/>
-      <CatergoryList title='Catergories' catergories={catergories}/>
       <CatergoryList title='Learn by Software' catergories={catergories}/>
       <CourseGroup title='Newly Added Courses' courses={courses}/>
       <CourseGroup title='For Beginners' courses={courses}/>

@@ -9,6 +9,7 @@ import Footer from './components/footer';
 import LandingNavbar from './components/landing_navbar';
 import CatergoryList from './components/catergory_group';
 import EnrolledCourseCard from './components/enrolled_course_card';
+import VideoPlayer from './components/video_player';
 export * from './components/title';
 export * from './theme';
-export { ErrorPage, AlertPopper, CourseCard, CourseGroup, ProjectCard, ProjectGroup, ReviewCard, Footer, LandingNavbar, CatergoryList, EnrolledCourseCard };
+export { ErrorPage, AlertPopper, CourseCard, CourseGroup, ProjectCard, ProjectGroup, ReviewCard, Footer, LandingNavbar, CatergoryList, EnrolledCourseCard, VideoPlayer };

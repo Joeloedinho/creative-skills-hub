@@ -12,12 +12,13 @@ import {
 } from "@mui/material";
 import React from "react";
 
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Footer, FullTitleElement } from "../../../shared";
 
 // TOD0: Disappearing navbar
 export default function StudentNavbar() {
-  const theme = useTheme()
+  const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>
       <Paper
@@ -65,7 +66,7 @@ export default function StudentNavbar() {
             <IconButton>
               <ShoppingCart />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => navigate('/student/profile')}>
               <Avatar>{'ML'}</Avatar>
             </IconButton>
           </Stack>

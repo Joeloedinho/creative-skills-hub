@@ -7,22 +7,31 @@ const editorRouter = require('./editorRoutes');
 const clientRouter = require('./clientRoutes');
 const signInRoutes = require('./signInRoutes'); 
 const passwordResetRoutes = require('./passwordResetRoutes');
+//const authenticateToken = require('./middleware/authenticateToken');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    credentials: true, 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+  }));
+  
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/creative-hub-db')
   .then(() => console.log('Connected to MongoDB.'))
   .catch(err => console.error('MongoDB connection error:', err));
 
+//app.use(authenticateToken);
 app.use('/students', studentRouter);
 app.use('/editors', editorRouter);
 app.use('/clients', clientRouter);
 app.use('/login', signInRoutes);
 app.use('/auth', passwordResetRoutes);
+app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {
     console.log('Root path accessed.');

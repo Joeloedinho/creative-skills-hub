@@ -63,6 +63,8 @@ const LoginForm = () => {
             .then((response) => {
               // Assuming the response contains a field 'userType' indicating where to navigate
               console.log("Login successful:", response.data);
+              const { token } = response.data;
+              sessionStorage.setItem('authToken', token);
               const { userType } = response.data;
               // Navigate based on userType
               navigate(`/${userType}`); // Adjust to match your routing setup

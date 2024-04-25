@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { generateVerificationCode, sendVerificationEmail } = require('./utils');
 const saltRounds = 10;
-
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const authenticateToken = require('./middleware/authenticateToken');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 // Student Schema
 const studentSchema = new mongoose.Schema({
@@ -15,10 +19,10 @@ const studentSchema = new mongoose.Schema({
   password: String,
   verificationCode: String,
   createdAt: { type: Date, default: Date.now, index: { expires: '24h' } },
+
 });
 
 const Student = mongoose.model('Student', studentSchema);
-
 const TempRegistration = mongoose.model('TempRegistration', studentSchema);
 
 // Middleware to hash password before saving a document
@@ -34,7 +38,124 @@ studentSchema.pre('save', async function(next) {
   }
 });
 
-// Register Student
+// multer for file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+      if (!req.user || !req.user.email) {
+          return cb(new Error('User email is not available'), false);
+      }
+      const extension = file.originalname.split('.').pop();
+      const filename = `${req.user.email.replace(/[@.]/g, '_')}-${Date.now()}.${extension}`;
+      cb(null, filename);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Update Student endpoint
+router.post('/updateProfile', authenticateToken, upload.single('profilePic'), async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized access: No user found" });
+  }
+
+  const { id } = req.user;
+  const { fullname, gender, phone, email, dateJoined } = req.body;
+  const profilePic = req.file ? req.file.path.replace(/\\/g, '/') : undefined;  
+
+  try {
+    const updatedData = {
+      fullname,
+      gender,
+      phone,
+      email,
+      dateJoined,
+      ...(profilePic && { profilePic })  
+    };
+
+    const student = await Student.findByIdAndUpdate(id, updatedData, { new: true });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    
+    const filePath = path.join(__dirname, 'public', 'studentData.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Failed to read student data file:', err);
+        return;
+      }
+      let existingData = JSON.parse(data);
+      const studentIndex = existingData.findIndex((s) => s.email === email);
+      if (studentIndex !== -1) {
+        existingData[studentIndex] = { ...existingData[studentIndex], ...updatedData };
+      } else {
+        existingData.push(updatedData);
+      }
+      fs.writeFile(filePath, JSON.stringify(existingData, null, 2), (err) => {
+        if (err) {
+          console.error('Failed to update student data file:', err);
+        }
+      });
+    });
+
+    res.json({ message: 'Profile updated successfully', data: student });
+  } catch (error) {
+    console.error('Error updating student profile:', error);
+    res.status(500).send({ message: "Error updating student profile.", error: error.message });
+  }
+});
+
+
+
+//fetch profile
+router.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await Student.findById(req.user.id);
+    if (!user) {
+      console.error('No user found with ID:', req.user.id);
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const filePath = path.join(__dirname, 'public', 'studentData.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Failed to read student data file:', err);
+        return res.status(500).send({ message: 'Error fetching student profile.', error: err.toString() });
+      }
+
+      const students = JSON.parse(data);
+      const studentData = students.find(s => s.email === user.email);
+
+      // Construct the URL for the profile picture using data from studentData.json if available
+      const profilePicUrl = studentData && studentData.profilePic
+        ? `${req.protocol}://${req.get('host')}/${studentData.profilePic}`
+        : `${req.protocol}://${req.get('host')}/uploads/default_profile_pic.png`;
+
+      console.log('Sending user data with profile pic:', {
+        ...user._doc,
+        profilePic: profilePicUrl
+      });
+
+      res.json({
+        fullname: user.fullname,
+        gender: user.gender,
+        email: user.email,
+        phone: user.phone,
+        dateJoined: user.createdAt.toISOString().substring(0, 10),
+        profilePic: profilePicUrl
+      });
+    });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).send({ message: 'Error fetching student profile.', error: error.toString() });
+  }
+});
+
+
+
 router.post('/register_student', async (req, res) => {
   const verificationCode = generateVerificationCode();
   try {
@@ -48,6 +169,42 @@ router.post('/register_student', async (req, res) => {
     await tempRegistration.save();
     console.log('Temporary registration saved:', tempRegistration);
 
+    // Update the studentData.json file
+    const filePath = path.join(__dirname, 'public', 'studentData.json');
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          // File does not exist, create it
+          fs.writeFile(filePath, JSON.stringify([tempRegistrationData]), { flag: 'wx' }, (err) => {
+            if (err) {
+              console.error('Failed to create student data file:', err);
+              return;
+            }
+            console.log('Student data file created and saved!');
+          });
+        } else {
+          console.error('Error reading student data file:', err);
+        }
+      } else {
+        // File exists, append new student data
+        let existingData = [];
+        try {
+          existingData = JSON.parse(data);
+        } catch (parseErr) {
+          console.error('Failed to parse existing student data:', parseErr);
+          // Decide how to handle the error, e.g., overwrite the file, log an error, 
+        }
+        existingData.push(tempRegistrationData);
+        fs.writeFile(filePath, JSON.stringify(existingData), (err) => {
+          if (err) {
+            console.error('Failed to update student data file:', err);
+            return;
+          }
+          console.log('Student data updated successfully!');
+        });
+      }
+    });
+
     await sendVerificationEmail(req.body.email, verificationCode);
     res.status(201).send({ message: "Student registration initiated. Please check your email for verification." });
   } catch (error) {
@@ -55,6 +212,8 @@ router.post('/register_student', async (req, res) => {
     res.status(500).send({ message: "Error processing student registration." });
   }
 });
+
+
 
 // Verify Email
 router.post('/verify_email', async (req, res) => {
@@ -65,8 +224,8 @@ router.post('/verify_email', async (req, res) => {
       return res.status(400).send({ message: 'Invalid or expired verification code.' });
     }
 
-    // Assuming userType is determined elsewhere or defaulting to 'student' for this route
-    const userType = 'student'; // Default userType for this endpoint
+    
+    const userType = 'student'; 
     const user = new Student(tempReg.toObject());
     await user.save();
     await TempRegistration.deleteOne({ email: tempReg.email });
@@ -81,5 +240,52 @@ router.post('/verify_email', async (req, res) => {
     res.status(500).send({ message: 'Verification failed. Please try again later.' });
   }
 });
+
+const reviewsFilePath = path.join(__dirname, 'public', 'reviews.json');
+
+// POST endpoint to submit a review
+router.post('/submitReview', authenticateToken, (req, res) => {
+  const review = req.body.review;
+  const userEmail = req.user.email; 
+
+  if (!review) {
+    return res.status(400).json({ message: "Review content is empty." });
+  }
+
+  // Read the existing reviews
+  fs.readFile(reviewsFilePath, (err, data) => {
+    if (err && err.code === 'ENOENT') {
+      // File does not exist, create it with the first review
+      fs.writeFile(reviewsFilePath, JSON.stringify([{ userEmail, review }], null, 2), err => {
+        if (err) return res.status(500).send({ message: "Failed to create review file." });
+        res.json({ message: "Review submitted successfully!" });
+      });
+    } else if (data) {
+      // File exists, add the new review
+      let reviews = JSON.parse(data);
+      reviews.push({ userEmail, review });
+      fs.writeFile(reviewsFilePath, JSON.stringify(reviews, null, 2), err => {
+        if (err) return res.status(500).send({ message: "Failed to save review." });
+        res.json({ message: "Review submitted successfully!" });
+      });
+    }
+  });
+});
+
+// GET endpoint to fetch all reviews
+router.get('/reviews', authenticateToken, (req, res) => {
+  fs.readFile(reviewsFilePath, (err, data) => {
+    if (err && err.code === 'ENOENT') {
+      
+      res.json([]);
+    } else if (data) {
+      let reviews = JSON.parse(data);
+      res.json(reviews);
+    } else {
+      res.status(500).send({ message: "Failed to read reviews." });
+    }
+  });
+});
+
 
 module.exports = router;

@@ -1,36 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const useFetch = (url) => {
-  const [data, setData] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
+    const [isFetching, setIsFetching] = useState(false);
+    const [error, setError] = useState(null);
+    const abortController = useRef(new AbortController());
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
-    const fetchData = async () => {
-      setIsFetching(true);
-      try {
-        const response = await fetch(url, { signal });
-        const data = await response.json();
-        setData(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsFetching(true);
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    signal: abortController.current.signal,
+                });
 
-    fetchData();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-    // Cleanup function
-    return () => {
-      // Abort fetch if component unmounts before fetch completes
-      controller.abort();
-    };
-  }, [url]);
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const data = await response.json();
+                    setData(data);
+                } else {
+                    throw new Error("Oops, we haven't got JSON!");
+                }
+            } catch (error) {
+                if (!abortController.current.signal.aborted) {
+                    setError(`Failed to fetch: ${error.message}`);
+                }
+            } finally {
+                setIsFetching(false);
+            }
+        };
 
-  return { data, isFetching, error };
+        fetchData();
+
+        return () => {
+            abortController.current.abort();
+        };
+    }, [url]); // Consider dependencies like headers if they may change over time
+
+    return { data, isFetching, error };
 };
 
 export default useFetch;

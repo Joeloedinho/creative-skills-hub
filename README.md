@@ -138,7 +138,7 @@ bcrypt for hashing and salting passwords.
 finally start your node js server on a different terminal in your code editor since react is already running in the other terminal
 
 
-### `node auth-server.js`
+### `node server.js`
 
 
 Open [http://localhost:3000](http://localhost:4000) to view it in your browser.

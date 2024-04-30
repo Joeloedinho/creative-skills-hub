@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Edit } from "@mui/icons-material";
 import {
   Avatar, Badge, Grid, IconButton, TextField, MenuItem, Button, Input, Table,
@@ -18,11 +19,17 @@ const ProfileInfo = () => {
     phone: "",
     dateJoined: "",
     profilePic: "default_profile_pic.png"
+    
   });
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(null);
   const authToken = sessionStorage.getItem('authToken');
+  const navigate = useNavigate(); 
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken');
+    navigate('/');
+  };
   useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);
@@ -118,7 +125,7 @@ const ProfileInfo = () => {
           >
             <Avatar src={imagePreviewUrl} sx={{ width: 300, height: 300 }} />
           </Badge>
-          <Button variant='outlined' sx={{ mt: 2 }} onClick={() => console.log('Logging out...')}>Log Out</Button>
+          <Button variant='outlined' sx={{ mt: 2 }} onClick={handleLogout}>Log Out</Button>
         </Grid>
         <Grid item xs={12} md={6}>
           <Formik

@@ -1,4 +1,4 @@
-// middleware/authenticateToken.js
+
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
             return res.status(403).send({ message: 'Invalid token', error: err });
         }
 
-        req.user = user; // Assign the user payload to the request object
+        req.user = user; 
         next();
     });
 };

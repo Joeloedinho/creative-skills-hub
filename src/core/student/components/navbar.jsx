@@ -59,7 +59,7 @@ export default function StudentNavbar() {
         <Stack direction="row" justifyContent="space-between" alignItems='center'>
           <Stack direction="row" alignItems="center">
             <Circle sx={{ fontSize: 30 }} />
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link to="/student" style={{ textDecoration: "none" }}>
               <FullTitleElement isDark={true} fontSize={20} />
             </Link>
           </Stack>

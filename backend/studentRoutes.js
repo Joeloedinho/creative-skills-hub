@@ -10,6 +10,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+
 // Student Schema
 const studentSchema = new mongoose.Schema({
   fullname: String,
@@ -192,7 +193,7 @@ router.post('/register_student', async (req, res) => {
           existingData = JSON.parse(data);
         } catch (parseErr) {
           console.error('Failed to parse existing student data:', parseErr);
-          // Decide how to handle the error, e.g., overwrite the file, log an error, 
+           
         }
         existingData.push(tempRegistrationData);
         fs.writeFile(filePath, JSON.stringify(existingData), (err) => {
@@ -243,49 +244,65 @@ router.post('/verify_email', async (req, res) => {
 
 const reviewsFilePath = path.join(__dirname, 'public', 'reviews.json');
 
-// POST endpoint to submit a review
-router.post('/submitReview', authenticateToken, (req, res) => {
-  const review = req.body.review;
-  const userEmail = req.user.email; 
+router.post('/submitReview', authenticateToken, async (req, res) => {
+  const reviewText = req.body.review;
+  const userEmail = req.user.email;
 
-  if (!review) {
+  if (!reviewText) {
     return res.status(400).json({ message: "Review content is empty." });
   }
 
-  // Read the existing reviews
-  fs.readFile(reviewsFilePath, (err, data) => {
-    if (err && err.code === 'ENOENT') {
-      // File does not exist, create it with the first review
-      fs.writeFile(reviewsFilePath, JSON.stringify([{ userEmail, review }], null, 2), err => {
-        if (err) return res.status(500).send({ message: "Failed to create review file." });
-        res.json({ message: "Review submitted successfully!" });
-      });
-    } else if (data) {
-      // File exists, add the new review
-      let reviews = JSON.parse(data);
-      reviews.push({ userEmail, review });
-      fs.writeFile(reviewsFilePath, JSON.stringify(reviews, null, 2), err => {
-        if (err) return res.status(500).send({ message: "Failed to save review." });
-        res.json({ message: "Review submitted successfully!" });
-      });
+  try {
+    const students = JSON.parse(fs.readFileSync('public/studentData.json', 'utf8'));
+    const user = students.find(student => student.email === userEmail);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  });
+
+    const baseUrl = `${req.protocol}://${req.get('host')}/`;
+    const profilePicUrl = user.profilePic ? baseUrl + user.profilePic : baseUrl + "uploads/default_avatar.png";
+
+   
+    const now = new Date();
+    const dateTime = now.toISOString();  
+    const reviewData = {
+      email: user.email,
+      review: reviewText,
+      profilePic: profilePicUrl, 
+      role: "Student",
+      dateTime: dateTime  
+    };
+
+    const reviews = JSON.parse(fs.readFileSync(reviewsFilePath, 'utf8') || "[]");
+    reviews.push(reviewData);
+    fs.writeFileSync(reviewsFilePath, JSON.stringify(reviews, null, 2));
+    res.json({ message: "Review submitted successfully!", review: reviewData });
+  } catch (error) {
+    console.error('Error during review submission:', error);
+    res.status(500).send({ message: "Internal server error", error: error.toString() });
+  }
 });
+
+
+
+
 
 // GET endpoint to fetch all reviews
 router.get('/reviews', authenticateToken, (req, res) => {
-  fs.readFile(reviewsFilePath, (err, data) => {
-    if (err && err.code === 'ENOENT') {
-      
-      res.json([]);
-    } else if (data) {
-      let reviews = JSON.parse(data);
-      res.json(reviews);
-    } else {
-      res.status(500).send({ message: "Failed to read reviews." });
-    }
-  });
+  try {
+    const reviewsData = fs.readFileSync(reviewsFilePath, 'utf8');
+    const reviews = JSON.parse(reviewsData || "[]");
+
+    
+    res.json(reviews);
+  } catch (error) {
+    console.error('Error reading or parsing reviews file:', error);
+    res.status(500).send({ message: "Failed to handle reviews data.", error: error.toString() });
+  }
 });
+
+
 
 
 module.exports = router;

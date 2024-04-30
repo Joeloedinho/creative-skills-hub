@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import VerificationInput from "react-verification-input";
@@ -11,12 +11,27 @@ function EmailVerification() {
     const [verificationCode, setVerificationCode] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
-   
+    const [open, setOpen] = useState(false); // State for Snackbar visibility
+
     console.log("Verification page state:", location.state);
     const { email: userEmail, userType } = location.state; // Retrieve the user's email passed from the previous page
 
     const handleChange = (value) => {
         setVerificationCode(value);
+    };
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    const handleSuccess = () => {
+        setOpen(true);
+        setTimeout(() => {
+            navigate(`/auth/login`);
+        }, 2000); // Navigate after 2 seconds
     };
 
     const handleSubmit = async (e) => {
@@ -31,30 +46,25 @@ function EmailVerification() {
         console.log("Sending verification request to:", verifyUrl);
 
         try {
-          const response = await axios.post(verifyUrl, {
-              email: userEmail,
-              verificationCode
-          });
+            const response = await axios.post(verifyUrl, {
+                email: userEmail,
+                verificationCode
+            });
 
-          console.log("Verification response:", response.data);
-      
-          // Handle a successful verification
-          if (response.data?.message === 'Email verified and user registered successfully.') {
-            navigate(`/${response.data.userType}`);
-              
-              //console.log(`Redirecting to /${userType}`);
-              
-          } else {;
-              // Handle any other messages or errors
-              setErrorMessage(response.data?.message || "Verification failed. Please try again.");
-          }
-      } catch (error) {
-          const message = error.response?.data?.message || "Network error. Please try again.";
-          setErrorMessage(message);
-          console.error("Verification error:", message);
-      } finally {
-          setLoading(false);
-      }
+            console.log("Verification response:", response.data);
+
+            if (response.data?.message === 'Email verified and user registered successfully.') {
+                handleSuccess();
+            } else {
+                setErrorMessage(response.data?.message || "Verification failed. Please try again.");
+            }
+        } catch (error) {
+            const message = error.response?.data?.message || "Network error. Please try again.";
+            setErrorMessage(message);
+            console.error("Verification error:", message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -67,7 +77,6 @@ function EmailVerification() {
         >
             <FullTitleElement />
             <Typography sx={{ color: "#fff" }}>
-                {/* Display the email to which the verification code was sent */}
                 We sent a verification code to {userEmail ? userEmail : "your email address"}.
             </Typography>
             <form onSubmit={handleSubmit}>
@@ -91,9 +100,14 @@ function EmailVerification() {
                     </Button>
                 </Stack>
             </form>
+            <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                onClose={handleSnackbarClose}
+                message="Registration successful! Please login to continue."
+            />
         </Stack>
     );
 }
 
 export default EmailVerification;
-

@@ -61,14 +61,6 @@ const LandingPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = roles.length;
 
-  if(loading) {
-    return <div>Loading</div>
-  }
-
-  if(userData) {
-    return <Navigate to={`/${userData.userType}`} replace={true} />
-  }
-
   console.log('Theme: ', theme);
 
   const handleNext = () => {
@@ -136,6 +128,13 @@ const LandingPage = () => {
     </Stack>
   ));
 
+  if(loading) {
+    return <div>Loading</div>
+  }
+
+  if(userData) {
+    return <Navigate to={`/${userData.userType}`} replace={true} />
+  } else {
   return (
     <Box sx={{
       backgroundColor: theme.palette.background.default
@@ -212,5 +211,5 @@ const LandingPage = () => {
     </Box>
   );
 };
-
+}
 export default LandingPage;

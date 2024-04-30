@@ -14,17 +14,17 @@ import {
 import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Footer, FullTitleElement } from "../../../shared";
 import useFetch from '../../../hooks/useFetch'; 
+import { useStudent } from '../contexts/studentContext';
 
 export default function StudentNavbar() {
   const navigate = useNavigate();
   const theme = useTheme();
-  const authToken = sessionStorage.getItem('authToken');
-  const [studentData, setStudentData] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(null);
+  
+  const { studentData, isFetching, error } = useStudent();
 
   if (isFetching) return <div>Loading...</div>;
-  if (error) return <div>Error fetching data: {error}</div>;
+  if (error || !studentData) return <div>Error fetching data: {error}</div>;
+
   return (
     <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>
       <Paper

@@ -52,7 +52,6 @@ const AuthProvider = ({ children }) => {
           // If the token is still valid we set the user data and token
           if (currentTime < new Date(expirationTime).getTime()) {
             setUserData({ token, userType });
-            setUserToken(token);
           } else {
             // If the token is not valid anymore we remove the user data
             localStorage.removeItem("userData");
@@ -67,12 +66,12 @@ const AuthProvider = ({ children }) => {
         });
       } finally {
         // We always set the loading state to false when the effect finishes
-        setLoading(false);
+        setLoading(() => false);
       }
     };
 
     fetchUserData();
-  }, [token]);
+  }, []);
 
   // The login function is used to login the user with the login API
   const login = async (values, setSubmitting) => {
@@ -82,7 +81,6 @@ const AuthProvider = ({ children }) => {
       const response = await axios.post("http://localhost:4000/login", values);
       const { token, userType } = response.data;
       // We set the token and user data
-      setUserToken(token);
       setUserData({token, userType});
       // We store the user data in the localStorage for future logins
       const expirationTime = new Date(

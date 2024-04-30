@@ -15,14 +15,11 @@ import { Google, MusicNote } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AlertPopper } from "../../../shared";
+import { useAuthContext } from "../contexts/authContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [loginResponse, setLoginResponse] = useState({
-    show: false,
-    type: "success",
-    message: "",
-  });
+  const { login, loading } = useAuthContext();
 
   return (
     <Stack
@@ -58,32 +55,7 @@ const LoginForm = () => {
             .required("Password is required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          axios
-            .post("http://localhost:4000/login", values)
-            .then((response) => {
-              // Assuming the response contains a field 'userType' indicating where to navigate
-              console.log("Login successful:", response.data);
-              const { token } = response.data;
-              sessionStorage.setItem('authToken', token);
-              const { userType } = response.data;
-              // Navigate based on userType
-              navigate(`/${userType}`); // Adjust to match your routing setup
-            })
-            .catch((error) => {
-              console.error(
-                "Login failed:",
-                error.response?.data?.message || "An error occurred"
-              );
-              // alert("invalid email and password combination");
-              setLoginResponse({
-                show: true,
-                type: "error",
-                message: "invalid email and password combination",
-              });
-            })
-            .finally(() => {
-              setSubmitting(false);
-            });
+          login(values, setSubmitting);
         }}
       >
         {() => (
@@ -148,8 +120,6 @@ const LoginForm = () => {
       >
         Create an account instead
       </MUILink>
-
-      <AlertPopper showAlert={loginResponse.show} handleClose={() => setLoginResponse({...loginResponse, show: false})} alertType={loginResponse.type}>{loginResponse.message}</AlertPopper>
     </Stack>
   );
 };

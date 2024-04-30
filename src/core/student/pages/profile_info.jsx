@@ -147,14 +147,6 @@ const ProfileInfo = () => {
               email: Yup.string().email("Invalid email").required("Email is required"),
               dateJoined: Yup.string().required("Date Joined is required")
             })}
-            onSubmit={(values, { setSubmitting }) => {
-              console.log("Form values:", values);
-              setSubmitting(false);
-              
-          } }
-
-          onSubmit={handleSubmit}
-
           >
             {({ isSubmitting }) => (
               <Form autoComplete="on" className="profile-form">

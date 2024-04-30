@@ -23,31 +23,6 @@ export default function StudentNavbar() {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsFetching(true);
-      try {
-        const response = await fetch('http://localhost:4000/students/profile', {
-          method: 'GET',
-          headers: { Authorization: `Bearer ${authToken}` },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setStudentData(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    if (authToken) {
-      fetchData();
-    }
-  }, [authToken]); 
-
   if (isFetching) return <div>Loading...</div>;
   if (error) return <div>Error fetching data: {error}</div>;
   return (

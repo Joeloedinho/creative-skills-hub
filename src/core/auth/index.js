@@ -6,6 +6,7 @@ import EditorRegistrationForm from "./pages/register_editor";
 import ClientRegistrationForm from "./pages/register_client";
 import EmailVerification from "./pages/email_verification";
 import ForgotPassword from "./pages/forgot_password";
+import { useAuthContext, AuthProvider } from "./contexts/authContext";
 
 export {
     LoginPage,
@@ -15,5 +16,7 @@ export {
     EditorRegistrationForm,
     ClientRegistrationForm,
     EmailVerification,
-    ForgotPassword
+    ForgotPassword,
+    useAuthContext,
+    AuthProvider,
 }

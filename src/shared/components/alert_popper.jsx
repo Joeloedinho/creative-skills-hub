@@ -1,7 +1,7 @@
 import { Close } from "@mui/icons-material";
 import { Box, Collapse, Alert, IconButton } from "@mui/material";
 
-const AlertPopper = ({showAlert, handleClose, children, alertType}) => {
+const AlertPopper = ({showAlert, handleClose, children, alertType,sx}) => {
     return ( 
         <Box sx={{
             position: 'fixed',

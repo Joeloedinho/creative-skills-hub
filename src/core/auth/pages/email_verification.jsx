@@ -4,10 +4,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VerificationInput from "react-verification-input";
 import { FullTitleElement } from "../../../shared";
 import axios from 'axios';
+import { useAuthContext } from "../contexts/authContext";
 
 function EmailVerification() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { verifyEmail } = useAuthContext()
     const [verificationCode, setVerificationCode] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -36,35 +38,7 @@ function EmailVerification() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (verificationCode.trim() === "") {
-            setErrorMessage("Please enter the verification code");
-            return;
-        }
-
-        setLoading(true);
-        const verifyUrl = `http://localhost:4000/${userType}s/verify_email`;
-        console.log("Sending verification request to:", verifyUrl);
-
-        try {
-            const response = await axios.post(verifyUrl, {
-                email: userEmail,
-                verificationCode
-            });
-
-            console.log("Verification response:", response.data);
-
-            if (response.data?.message === 'Email verified and user registered successfully.') {
-                handleSuccess();
-            } else {
-                setErrorMessage(response.data?.message || "Verification failed. Please try again.");
-            }
-        } catch (error) {
-            const message = error.response?.data?.message || "Network error. Please try again.";
-            setErrorMessage(message);
-            console.error("Verification error:", message);
-        } finally {
-            setLoading(false);
-        }
+        await verifyEmail(setLoading, userType, userEmail, verificationCode, handleSuccess, setErrorMessage);
     }
 
     return (

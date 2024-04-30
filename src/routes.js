@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import { AuthWrapper, ClientRegistrationForm, EditorRegistrationForm, EmailVerification, ForgotPassword, LoginPage, Register, StudentRegistrationForm } from "./core/auth";
+import { AuthWrapper, ClientRegistrationForm, EditorRegistrationForm, EmailVerification, ForgotPassword, LoginPage, Register, StudentRegistrationForm, AuthProvider } from "./core/auth";
 import { ErrorPage } from "./shared";
 import { CoursePage, ProfilePage, StudentHomePage, StudentNavbar } from "./core/student";
 import { AdminHomePage } from "./core/admin";
@@ -10,11 +10,13 @@ import LandingPage from "./core/landing";
 const routes = createBrowserRouter([
     {
         path: '/',
-        element: <LandingPage />,
+        element: <AuthProvider>
+            <LandingPage />
+        </AuthProvider>,
     },
     {
         path: 'auth',
-        element: <AuthWrapper />,
+        element: <AuthProvider><AuthWrapper /></AuthProvider>,
         children: [
             {
                 path: '',
@@ -58,7 +60,7 @@ const routes = createBrowserRouter([
     },
     {
         path: 'student',
-        element: <StudentNavbar />,
+        element: <AuthProvider><StudentNavbar /></AuthProvider>,
         children: [
             {
                 path: '',
@@ -76,15 +78,15 @@ const routes = createBrowserRouter([
     },
     {
         path: 'admin',
-        element: <AdminHomePage />
+        element: <AuthProvider><AdminHomePage /></AuthProvider>
     },
     {
         path: "editor",
-        element: <EditorHomePage />
+        element: <AuthProvider><EditorHomePage /></AuthProvider>
     },
     {
         path: "client",
-        element: <ClientHomePage />
+        element: <AuthProvider><ClientHomePage /></AuthProvider>
     },
     {
         path: "/*",

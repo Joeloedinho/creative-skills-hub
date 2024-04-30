@@ -9,9 +9,11 @@ import * as Yup from "yup";
 import axios from 'axios';
 import { useState } from "react";
 import { AlertPopper } from "../../../shared";
+import { useAuthContext } from "../contexts/authContext";
 
 const StudentRegistrationForm = () => {
   const navigate = useNavigate()
+  const { loading, register } = useAuthContext();
   const [loginResponse, setLoginResponse] = useState({
     show: false,
     type: "success",
@@ -42,33 +44,7 @@ const StudentRegistrationForm = () => {
           .required("Password is required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-  
-        console.log("Form values:", values);
-
-        axios.post('http://localhost:4000/students/register_student', values, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(response => {
-          console.log("Registration response:", response.data);
-          
-          // Navigate to verification page and pass along the email as state
-          navigate("/auth/verify-email", { state: { email: values.email, userType: 'student' } });
-
-        })
-        .catch(error => {
-          console.error("Registration failed:", error);
-          // alert("Registration failed. Please try again.");
-          setLoginResponse({
-            show: true,
-            type: "error",
-            message: "Registration failed. Please try again.",
-          });
-        })
-        .finally(() => {
-          setSubmitting(false); // Ensures the form is no longer in a submitting state
-        });
+        register(values, 'student', setSubmitting);
       }}
     >
       {() => (

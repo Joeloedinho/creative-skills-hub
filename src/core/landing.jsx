@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as Assets from "../assets";
 import {
   CourseGroup,
@@ -22,6 +22,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { courses } from "../temp/courses";
 import { projects } from "../temp/projects";
 import { reviews } from "../temp/reviews";
+import { useAuthContext } from "./auth/contexts/authContext";
 
 const roles = [
   {
@@ -55,11 +56,19 @@ const LandingPage = () => {
   // const { projects, isFetchingProjects, projectsFetchError } = useFetch('url');
   // const { catergories, isFetchingCaterogories, catergoriesFetchError} = useFetch('url');
   // const { reviews, isFetchingReviews, reviewsFetchError } = useFetch("url");
-
+  const { userData, loading } = useAuthContext();
+  const theme = useTheme()
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = roles.length;
 
-  const theme = useTheme()
+  if(loading) {
+    return <div>Loading</div>
+  }
+
+  if(userData) {
+    return <Navigate to={`/${userData.userType}`} replace={true} />
+  }
+
   console.log('Theme: ', theme);
 
   const handleNext = () => {

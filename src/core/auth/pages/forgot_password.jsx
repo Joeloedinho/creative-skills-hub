@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { AlertPopper, FullTitleElement } from '../../../shared';
 import VerificationInput from 'react-verification-input';
+import { useAuthContext } from "../contexts/authContext";
 
 import axios from 'axios';
 
@@ -17,7 +18,6 @@ export default function ForgotPassword() {
     type: "success",
     message: "",
   });
-
 
   return (
     <Stack
@@ -46,7 +46,8 @@ export default function ForgotPassword() {
   );
 };
 
-const EnterEmail = ({ setIndex, setEmail, setResponse }) => { 
+const EnterEmail = ({ setIndex, setEmail, setResponse }) => {
+  const { getEmail } = useAuthContext() 
   return (
     <Stack>
       <Typography sx={{ color: '#fff' }}>Please enter the email your account is associated with</Typography>
@@ -59,21 +60,7 @@ const EnterEmail = ({ setIndex, setEmail, setResponse }) => {
         })}
         onSubmit={(values, { setSubmitting }) => {
           setEmail(values.email); 
-          axios.post('http://localhost:4000/auth/request_reset', { email: values.email })
-            .then(response => {
-              console.log(response.data.message);
-              setIndex((prev) => prev + 1); 
-            })
-            .catch(error => {
-              console.error('Error:', error.response.data.message);
-              // alert('Error: ' + error.response.data.message); 
-              setResponse({
-                type: 'error',
-                show: true,
-                message: 'Error: ' + error.response.data.message,
-              })
-            })
-            .finally(() => setSubmitting(false));
+          getEmail({email: values.email, setSubmitting, whenDone: () => setIndex((prev) => prev + 1)});
         }}
       >
         <Form className="auth-form" id="client-form" noValidate>
@@ -120,7 +107,7 @@ const SelectAccount = ({ setIndex, email }) => {
 const VerifyEmail = ({ setIndex, email }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const { verifyEmailCode } = useAuthContext()
   
   const handleChange = (value) => {
     setVerificationCode(value); 
@@ -129,21 +116,8 @@ const VerifyEmail = ({ setIndex, email }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!verificationCode) {
-      setErrorMessage('Please enter the verification code');
-      return;
-    }
-    axios.post('http://localhost:4000/auth/verify_reset_code', { email, verificationCode })
-      .then(response => {
-        console.log(response.data.message);
-       
-        localStorage.setItem('resetToken', response.data.token); 
-        setIndex((prev) => prev + 1); 
-      })
-      .catch(error => {
-        console.error('Verification failed:', error.response.data.message);
-        setErrorMessage('Verification failed. Please try again.');
-      });
+    console.log('Code', verificationCode)
+    verifyEmailCode(email, verificationCode, () => setIndex((prev) => prev + 1));
   };
 
   return (
@@ -176,39 +150,13 @@ const VerifyEmail = ({ setIndex, email }) => {
 const ResetPassword = ({response, setResponse}) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('resetToken');
+  const { resetPassword } = useAuthContext();
   return (
     <Stack sx={{maxWidth: 400}}>
       <Formik
         initialValues={{ password: '', confirmPassword: '' }}
         onSubmit={(values, { setSubmitting }) => {
-      
-          axios.post('http://localhost:4000/auth/reset', { 
-            token, 
-            newPassword: values.password 
-          })
-          .then(response => {
-            console.log(response.data.message);
-            localStorage.removeItem('resetToken'); 
-            // alert('password reset successful!! click ok to navigate to login page');
-            setResponse({
-              type: 'success',
-              show: 'true',
-              message: 'password reset successful',
-            })
-            setTimeout(() => {
-              setResponse(prev => ({...prev, show: false}))
-              navigate('/auth/login');
-            }, 1000)
-          })
-          .catch(error => {
-            console.error('Error resetting password:', error.response.data.message);
-            setResponse({
-              type: 'error',
-              show: 'error',
-              message: 'Error resetting password: ' + error.response.data.message,
-            })
-          })
-          .finally(() => setSubmitting(false));
+          resetPassword(token, values.password, setSubmitting)
         }}
         >
         <Form className="auth-form" noValidate>

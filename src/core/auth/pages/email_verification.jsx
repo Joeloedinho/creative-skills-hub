@@ -17,7 +17,6 @@ function EmailVerification() {
 
     console.log("Verification page state:", location.state);
     const { email: userEmail, userType } = location.state; // Retrieve the user's email passed from the previous page
-
     const handleChange = (value) => {
         setVerificationCode(value);
     };
@@ -38,7 +37,7 @@ function EmailVerification() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await verifyEmail(setLoading, userType, userEmail, verificationCode, handleSuccess, setErrorMessage);
+        await verifyEmail(userType, userEmail, verificationCode);
     }
 
     return (

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AlertPopper } from '../../../shared';
+import { useAlert } from '../../../hooks'
 import { replace } from 'formik';
 
 // Create the UserContext
@@ -14,6 +14,7 @@ const useAuthContext = () => useContext(AuthContext);
 // and functions to interact with the authentication API to all the components
 // that need it, using the React Context API
 const AuthProvider = ({ children }) => {
+  const alert = useAlert()
   // The user data is stored in the localStorage, so we can retrieve it when
   // the app starts
   const [userData, setUserData] = useState(null);
@@ -22,14 +23,6 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   // The authResponse state is used to display a message to the user after the
   // login, registration or logout
-  const [authResponse, setAuthResponse] = useState({
-    // show is true if the message should be displayed
-    show: false,
-    // type is the message type (success, error, etc.)
-    type: "success",
-    // message is the message to be displayed
-    message: "",
-  });
   // The error state is used to store any error that might occur during the
   // login, registration or logout
   const [error, setError] = useState(null);
@@ -59,11 +52,8 @@ const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         // If there is an error we display an error message
-        setAuthResponse({
-          show: true,
-          type: "error",
-          message: "An error occurred",
-        });
+        setError(error)
+        alert.show({message: 'An error occured', type: 'error', duration: 2000})
       } finally {
         // We always set the loading state to false when the effect finishes
         setLoading(() => false);
@@ -94,15 +84,9 @@ const AuthProvider = ({ children }) => {
       navigate(`/${userType}`, replace); // Adjust to match your routing setup
     } catch (error) {
       // If there is an error we display an error message
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || "An error occurred"
-      );
-      setAuthResponse({
-        show: true,
-        type: "error",
-        message: "An error occurred",
-      });
+      const message = 'Login Failed ' + error.response?.data?.message || "An error occurred";
+      alert.show({message: message, type: 'error', duration: 5000})
+      setError(error)
     } finally {
       // We always set the submitting state to false when the login finishes
       setSubmitting(false);
@@ -125,12 +109,9 @@ const AuthProvider = ({ children }) => {
       navigate("/auth/verify-email", { state: { email: values.email, userType: userType } });
     } catch (error) {
       // If there is an error we display an error message
-      console.error("Registration failed:", error);
-      setAuthResponse({
-        show: true,
-        type: "error",
-        message: "Registration failed. Please try again.",
-      });
+      const message = 'Registration Failed ' + error.response?.data?.message || "An error occurred";
+      alert.show({message: message, type: 'error', duration: 5000})
+      setError(error)
     } finally {
       // We always set the loading state to false when the registration finishes
       setLoading(false);
@@ -142,17 +123,14 @@ const AuthProvider = ({ children }) => {
     // We remove the user data from the localStorage
     setUserData(null);
     localStorage.removeItem("userData");
+    setError(null)
   };
 
   // The verifyEmail function is used to verify the user's email with the verify
   // email API
   const verifyEmail = async (userType, userEmail, verificationCode) => {
     if (verificationCode.trim() === "") {
-      setAuthResponse({
-        show: true,
-        type: "error",
-        message: "Please enter the verification code.",
-      });
+      alert.show({type: "error", message: "Please enter the verification code.", duration: 2000});
       return;
     }
 
@@ -167,22 +145,16 @@ const AuthProvider = ({ children }) => {
       });
 
       if (response.data.message === 'Email verified and user registered successfully.') {
-        setAuthResponse({
-          show: true,
-          type: "success",
-          message: "Email verified and user registered successfully. Please continue to login",
-        });
+        alert.show({message: 'Email verified and user registered successfully.', type: 'error', duration: 5000})
+        setError(null)
         navigate(`/auth/login`, { replace: true });
       } else {
         throw new Error('Verification Failed. Please try again.');
       }
     } catch (error) {
       const message = error.response?.data?.message || 'Network error. Please try again.';
-      setAuthResponse({
-        show: true,
-        type: 'error',
-        message,
-      });
+      alert.show({message: message, type: 'error', duration: 5000})
+      setError(error)
       console.error('Verification error:', message);
     } finally {
       setLoading(false);
@@ -191,12 +163,9 @@ const AuthProvider = ({ children }) => {
 
   // We provide the functions and variables to the children components
   return (
-   <>
      <AuthContext.Provider value={{ userData, login, register, logout, verifyEmail, loading, error }}>
       {children}
     </AuthContext.Provider>
-    <AlertPopper showAlert={authResponse.show} handleClose={() => setAuthResponse({...authResponse, show: false})} alertType={authResponse.type}>{authResponse.message}</AlertPopper>
-   </>
   );
 };
 

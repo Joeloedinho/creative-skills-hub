@@ -13,6 +13,7 @@ import {
 import { ErrorPage } from "./shared";
 import {
   CoursePage,
+  EnrolledCourses,
   ProfilePage,
   StudentHomePage,
   StudentNavbar,
@@ -102,6 +103,10 @@ const routes = createBrowserRouter([
         path: "profile",
         element: <ProfilePage />,
       },
+      {
+        path: "my-courses",
+        element: <EnrolledCourses />,
+      }
     ],
   },
   {
@@ -130,7 +135,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/*",
-    element: <ErrorPage />,
+    element: <Navigate to="/" replace />,
   },
 ]);
 

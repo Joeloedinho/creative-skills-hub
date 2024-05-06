@@ -8,6 +8,7 @@ import { useState } from "react";
 import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import ProfileInfo from "./profile_info";
+import { TabPanel, a11yProps } from "../../../shared";
 
 //TODO : Fix validation errors not displaying
 
@@ -58,31 +59,5 @@ const ProfilePage = () => {
     </Paper>
   );
 };
-
-function TabPanel({ children, value, index, ...other }) {
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
 
 export default ProfilePage;

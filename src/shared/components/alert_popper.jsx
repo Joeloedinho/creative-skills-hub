@@ -6,6 +6,7 @@ const AlertPopper = ({showAlert, handleClose, children, alertType,sx}) => {
         <Box sx={{
             position: 'fixed',
             top: 7,
+            zIndex: 10,
             left: '50%',
             transform: 'translate(-50%, 0);',
         }}>

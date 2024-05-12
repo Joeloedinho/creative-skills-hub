@@ -23,7 +23,7 @@ export default function StudentNavbar() {
   const { studentData, isFetching, error } = useStudent();
 
   if (isFetching) return <div>Loading...</div>;
-  if (error || !studentData) return <div>Error fetching data: {error}</div>;
+  // if (error || !studentData) return <div>Error fetching data: {error}</div>;
 
   return (
     <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>

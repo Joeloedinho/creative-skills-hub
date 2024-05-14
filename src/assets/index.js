@@ -9,5 +9,6 @@ import TwitterIcons from './icons/twitter_3670151.png';
 import PinterestIcons from './icons/pinterest_220214.png';
 import FacebookIcon from './icons/facebook_5968764.png';
 import InstagramIcon from './icons/instagram_2111463.png';
+import MTNIcon from './icons/mtn.svg';
 
-export { happyMan, editorWorkspace, studentWorkspace, clientWorkspace, courseCardImg, DiscordIcon, YoutubeIcon, TwitterIcons, PinterestIcons, FacebookIcon, InstagramIcon };
+export { happyMan, editorWorkspace, studentWorkspace, clientWorkspace, courseCardImg, DiscordIcon, YoutubeIcon, TwitterIcons, PinterestIcons, FacebookIcon, InstagramIcon, MTNIcon };

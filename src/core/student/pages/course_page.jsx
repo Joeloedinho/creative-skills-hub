@@ -19,8 +19,9 @@ import {
   Tab,
   Tabs,
   useTheme,
+  LinearProgress,
 } from "@mui/material";
-import { TabPanel, VideoPlayer, a11yProps } from "../../../shared";
+import { PaymentModal, TabPanel, VideoPlayer, a11yProps } from "../../../shared";
 import {
   Attachment,
   AttachmentRounded,
@@ -28,6 +29,7 @@ import {
   HorizontalRule,
   Pause,
   PlayArrow,
+  TroubleshootOutlined,
 } from "@mui/icons-material";
 import SwipeableViews from "react-swipeable-views";
 
@@ -95,8 +97,9 @@ const CoursePage = () => {
   // if (!course) {
   //   return <Typography variant="h6">Course not found</Typography>;
   // }
-  const [activeLesson, setActiveLesson] = useState(lessons[0]);
+  const [activeLesson, setActiveLesson] = useState(lessons[1]);
   const [tabValue, setTabValue] = useState(0);
+  const [makePayment, setMakePayment] = useState(false);
   const theme = useTheme();
 
   const handleChange = (event, number) => {
@@ -138,6 +141,7 @@ const CoursePage = () => {
                   variant="contained"
                   fullWidth
                   sx={{ maxWidth: 300, marginBottom: 2 }}
+                  onClick={() => setMakePayment(true)}
                 >
                   Purchase
                 </Button>
@@ -199,6 +203,22 @@ const CoursePage = () => {
                   </TabPanel>
                   <TabPanel value={tabValue} index={1} dir={theme.direction}>
                     <Box padding={2}>
+                      <Stack direction='row' alignItems='center' spacing={1}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        component="p"
+                        gutterBottom
+                      >
+                        Progress:
+                      </Typography>
+                      <Box flexGrow={1}>
+                        <LinearProgress value={37} variant="buffer" sx={{height: 10}} />
+                      </Box>
+                      <Typography>
+                        {37} %
+                      </Typography>
+                      </Stack>
                       <Typography
                         variant="h5"
                         fontWeight="bold"
@@ -261,6 +281,7 @@ const CoursePage = () => {
           </Box>
         </Stack>
       </Card>
+      <PaymentModal isOpen={makePayment} handleClose={() => setMakePayment(false)} amount={12000} title="Purchase Intro to Web Development" />
     </Container>
   );
 };

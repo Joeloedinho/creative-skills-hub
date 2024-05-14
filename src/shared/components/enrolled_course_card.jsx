@@ -10,7 +10,7 @@ const style = {
 const EnrolledCourseCard = ({ id, course }) => {
   const navigate = useNavigate()
   return course !== null ? (
-    <Card sx={{ width: 250, margin: 2, paddingBottom: 1 }} className='course-card' onClick={() => navigate(`/course/${id}`)}>
+    <Card sx={{ width: 250, margin: 2, paddingBottom: 1 }} className='course-card' onClick={() => navigate(`./course/${id}`)}>
         <Stack
           justifyContent="end"
           sx={{

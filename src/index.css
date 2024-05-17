@@ -16,7 +16,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Auth Pages */
@@ -50,7 +50,7 @@
 }
 
 .wave {
-  background:rgba(47, 47, 47, 0.5);
+  background: rgba(47, 47, 47, 0.5);
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 200%;
@@ -125,7 +125,7 @@
 }
 
 #registeration-options-links .active {
-  background-color: var(--primary-color-dark);;
+  background-color: var(--primary-color-dark);
 }
 
 #registeration-options-links .active * {
@@ -156,7 +156,21 @@
   text-decoration: none;
 }
 
-.project-card:hover  {
+.project-card:hover {
   background-color: #85858574;
   cursor: pointer;
+}
+
+a.active {
+  background-color: var(--primary-color-dark) !important;
+  color: white !important;
+  border-radius: 5px;
+}
+
+.active * {
+  color: white !important;
+}
+
+th {
+  font-weight: bold !important;
 }

@@ -10,7 +10,6 @@ import {
   StudentRegistrationForm,
   AuthProvider,
 } from "./core/auth";
-import { ErrorPage } from "./shared";
 import {
   CoursePage,
   EnrolledCourses,
@@ -19,10 +18,22 @@ import {
   StudentNavbar,
   StudentProvider,
 } from "./core/student";
-import { AdminHomePage } from "./core/admin";
+import {
+  AdminDashboard,
+  AdminNavbar,
+  AllStudentsPage,
+  AllClientsPage,
+  AllCoursesPage,
+  AllEditorsPage,
+  AllProjectsPage,
+  AllReviewsPage,
+  StudentDetailsPage,
+} from "./core/admin";
 import { EditorHomePage } from "./core/editor";
 import { ClientHomePage } from "./core/client";
 import LandingPage from "./core/landing";
+import CourseDetailPage from "./core/admin/pages/course_details";
+import { AdminProvider } from "./core/admin/contexts/adminContext";
 
 const routes = createBrowserRouter([
   {
@@ -106,16 +117,68 @@ const routes = createBrowserRouter([
       {
         path: "my-courses",
         element: <EnrolledCourses />,
-      }
+      },
     ],
   },
   {
     path: "admin",
     element: (
       <AuthProvider>
-        <AdminHomePage />
+        <AdminProvider>
+          <AdminNavbar />
+        </AdminProvider>
       </AuthProvider>
     ),
+    children: [
+      {
+        path: "",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "students",
+        element: <AllStudentsPage />,
+      },
+      {
+        path: "student/:studentID",
+        element: <StudentDetailsPage />,
+      },
+      {
+        path: "editors",
+        element: <AllEditorsPage />,
+      },
+      {
+        path: "editor/:editorID",
+        element: <div>Editor</div>,
+      },
+      {
+        path: "clients",
+        element: <AllClientsPage />,
+      },
+      {
+        path: ":clientID",
+        element: <div>Client</div>,
+      },
+      {
+        path: "courses",
+        element: <AllCoursesPage />,
+      },
+      {
+        path: "course/:courseID",
+        element: <CourseDetailPage />,
+      },
+      {
+        path: "Projects",
+        element: <AllProjectsPage />,
+      },
+      {
+        path: "project/:projectID",
+        element: <div>Projects</div>,
+      },
+      {
+        path: "reviews",
+        element: <AllReviewsPage />,
+      },
+    ],
   },
   {
     path: "editor",

@@ -33,6 +33,7 @@ import { EditorHomePage } from "./core/editor";
 import { ClientHomePage } from "./core/client";
 import LandingPage from "./core/landing";
 import CourseDetailPage from "./core/admin/pages/course_details";
+import { AdminProvider } from "./core/admin/contexts/adminContext";
 
 const routes = createBrowserRouter([
   {
@@ -123,7 +124,9 @@ const routes = createBrowserRouter([
     path: "admin",
     element: (
       <AuthProvider>
-        <AdminNavbar />
+        <AdminProvider>
+          <AdminNavbar />
+        </AdminProvider>
       </AuthProvider>
     ),
     children: [

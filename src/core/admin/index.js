@@ -7,6 +7,7 @@ import AllCoursesPage from "./pages/courses";
 import AllProjectsPage from "./pages/projects";
 import AllReviewsPage from "./pages/reviews";
 import StudentDetailsPage from "./pages/student_details";
+import { useAdmin, AdminProvider } from "./contexts/adminContext";
 
 export {
   AdminDashboard,

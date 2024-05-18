@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useAuthContext } from "../../auth/contexts/authContext";
 
 const ProfileInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,7 +24,8 @@ const ProfileInfo = () => {
   });
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(null);
-  const authToken = sessionStorage.getItem('authToken');
+  const { userData } = useAuthContext();
+  const authToken = userData?.token
   const navigate = useNavigate(); 
 
   const handleLogout = () => {

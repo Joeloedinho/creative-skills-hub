@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Grid, Stack, TextField, Typography, Avatar } from "@mui/material";
 import { happyMan } from "../../../assets";
-import { CatergoryList, CourseGroup, ProjectGroup } from "../../../shared";
+import { CatergoryList, CourseGroup, ProjectGroup, ReviewCard } from "../../../shared";
 import { courses } from "../../../temp/courses";
 import { projects } from "../../../temp/projects";
 import axios from 'axios';
+import { useAuthContext } from '../../auth/contexts/authContext';
 
 export default function StudentHomePage() {
   const [review, setReview] = useState('');
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const authToken = sessionStorage.getItem('authToken'); // Ensure this is managed securely
+  const { userData } = useAuthContext()
+  const authToken = userData?.token; // Ensure this is managed securely
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -74,27 +76,17 @@ export default function StudentHomePage() {
       <CourseGroup title='For Beginners' courses={courses} />
       <ProjectGroup title='Some Projects for Editors' projects={projects} />
       {/* Review Display Section */}
-      <Box sx={{ padding: 3, maxWidth: 600, marginX: 'auto' }}>
+      <Box sx={{ padding: 3, width: '100%', marginX: 'auto' }}>
   <Typography variant="h6" fontWeight='bold'>Student Reviews</Typography>
+  <Stack direction='row' justifyContent={'center'} sx={{width: '100%', overflowX: 'auto'}}>
   {reviews.length > 0 ? (
-  reviews.map((review, index) => (
-    <Box key={index} sx={{ marginBottom: 2, border: '1px solid #ccc', padding: 2 }}>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <Avatar src={review.profilePic} alt="Profile Pic" sx={{ width: 40, height: 40 }} />
-        </Grid>
-        <Grid item xs>
-          <Typography variant="subtitle1">{review.email}</Typography>
-          <Typography variant="body1">{review.review}</Typography>
-          <Typography variant="caption" sx={{fontStyle: 'italic', color: 'blue' }}>{review.role}</Typography>
-          <Typography variant="caption"sx={{marginLeft: 2}}>{new Date(review.dateTime).toLocaleString()}</Typography>
-        </Grid>
-      </Grid>
-    </Box>
+    reviews.map((review, index) => (
+    <ReviewCard review={review} />
   ))
 ) : (
   <Typography paragraph>No reviews yet. Be the first to write one!</Typography>
 )}
+</Stack>
 </Box>
       <Box sx={{ padding: 3, maxWidth: 600, marginX: 'auto' }}>
         <Typography fontWeight='bold'>Write a Review About Our Platform</Typography>

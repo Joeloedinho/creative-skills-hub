@@ -19,7 +19,8 @@ const StudentProvider = ({ children }) => {
     message: ""
   });
 
-  const authToken = userData?.koken
+  const authToken = userData?.token
+  console.log('Authtoken', userData?.token)
   useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);

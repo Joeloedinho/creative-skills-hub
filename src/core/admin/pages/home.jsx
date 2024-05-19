@@ -6,7 +6,6 @@ import {
   Typography,
   Box,
   useTheme,
-  useMediaQuery
 } from "@mui/material";
 import { styled } from "@mui/system";
 import {
@@ -15,22 +14,7 @@ import {
   Edit, Reviews
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-// Dummy data for demonstration purposes
-const stats = {
-  totalStudents: 200,
-  activeStudents: 180,
-  totalEditors: 15,
-  activeEditors: 12,
-  totalClients: 50,
-  activeClients: 45,
-  totalCourses: 30,
-  averageCourseRating: 4.5,
-  totalProjects: 120,
-  averageProjectRating: 4.7,
-  reviews: 10,
-};
-
+import { useAdmin } from '../contexts/adminContext';
 
 const StatCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -48,6 +32,11 @@ const StatCard = styled(Paper)(({ theme }) => ({
 const AdminDashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { stats, students } = useAdmin();
+
+  if (!stats) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <Container>
@@ -62,7 +51,7 @@ const AdminDashboard = () => {
                 <Typography variant="h5" fontWeight="bold">
                   Total Students
                 </Typography>
-                <Typography variant="h2">{stats.totalStudents}</Typography>
+                <Typography variant="h2">{students.length}</Typography>
                 <Typography variant="body2">
                   Active: {stats.activeStudents}
                 </Typography>
@@ -138,24 +127,6 @@ const AdminDashboard = () => {
               <Reviews fontSize="large" />
             </StatCard>
           </Grid>
-          {/* <Grid item xs={12}>
-          <Paper sx={{ padding: theme.spacing(3) }}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>Monthly Overview</Typography>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={data}>
-                <Line type="monotone" dataKey="students" stroke="#8884d8" />
-                <Line type="monotone" dataKey="editors" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="clients" stroke="#ffc658" />
-                <Line type="monotone" dataKey="courses" stroke="#ff7300" />
-                <Line type="monotone" dataKey="projects" stroke="#387908" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-              </LineChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid> */}
         </Grid>
       </Paper>
     </Container>

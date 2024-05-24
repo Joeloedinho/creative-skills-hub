@@ -32,7 +32,7 @@ const AdminProvider = ({ children }) => {
   });
 
   const authToken = userData?.token;
-
+  
   useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);

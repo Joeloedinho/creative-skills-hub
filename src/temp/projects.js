@@ -1,3 +1,5 @@
+import { Attachment } from "@mui/icons-material"
+
 const projects = [
     {
         dateAdded: 'Yesterday',
@@ -9,7 +11,9 @@ const projects = [
         skills: 'intermediate',
         status: 'Open',
         client: 'MD Haggai',
-        tags: ['Adobe Illustrator', 'Filmora']
+        tags: ['Adobe Illustrator', 'Filmora'],
+        attachment: "",
+        submittedFile: "",
     },
     {
         dateAdded: 'Yesterday',

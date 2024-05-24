@@ -89,7 +89,7 @@ const AllCoursesPage = () => {
           <Typography variant="h4" gutterBottom>
             All Courses
           </Typography>
-          <Button variant="contained" startIcon={<Add />}>
+          <Button variant="contained" startIcon={<Add />} onClick={() => navigate("/admin/new-course")}>
             Add Course
           </Button>
         </Stack>

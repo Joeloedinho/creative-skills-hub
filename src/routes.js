@@ -29,6 +29,9 @@ import {
   AllReviewsPage,
   StudentDetailsPage,
   NewCourse,
+  EditorDetailsPage,
+  ClientDetailsPage,
+  ProjectDetailsPage,
 } from "./core/admin";
 import { EditorHomePage } from "./core/editor";
 import { ClientHomePage } from "./core/client";
@@ -149,15 +152,15 @@ const routes = createBrowserRouter([
       },
       {
         path: "editor/:editorID",
-        element: <div>Editor</div>,
+        element: <EditorDetailsPage />,
       },
       {
         path: "clients",
         element: <AllClientsPage />,
       },
       {
-        path: ":clientID",
-        element: <div>Client</div>,
+        path: "client/:clientID",
+        element: <ClientDetailsPage />,
       },
       {
         path: "courses",
@@ -173,7 +176,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "project/:projectID",
-        element: <div>Projects</div>,
+        element: <ProjectDetailsPage />,
       },
       {
         path: "reviews",

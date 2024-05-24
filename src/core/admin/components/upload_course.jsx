@@ -2,8 +2,10 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, InputAdornment, Box, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const PriceForm = ({data, setData, goBack}) => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       price: '',
@@ -37,6 +39,7 @@ const PriceForm = ({data, setData, goBack}) => {
         */
 
         // for price, its preferable you use values.price rather than data.price
+        navigate('/admin/courses')
     },
   });
 

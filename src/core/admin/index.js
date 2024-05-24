@@ -9,6 +9,9 @@ import AllReviewsPage from "./pages/reviews";
 import StudentDetailsPage from "./pages/student_details";
 import { useAdmin, AdminProvider } from "./contexts/adminContext";
 import NewCourse from "./pages/new_course";
+import EditorDetailsPage from "./pages/editor_details";
+import ClientDetailsPage from "./pages/client_details";
+import ProjectDetailsPage from "./pages/project_details";
 
 export {
   AdminDashboard,
@@ -23,4 +26,7 @@ export {
   useAdmin,
   AdminProvider,
   NewCourse,
+  EditorDetailsPage,
+  ClientDetailsPage,
+  ProjectDetailsPage,
 };

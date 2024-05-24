@@ -18,7 +18,7 @@ const AdminProvider = ({ children }) => {
   });
 
   // TODO: @haggai, check this
-  const authToken = userData?.koken;
+  const authToken = userData?.token;
   useEffect(() => {
     const fetchData = async () => {};
 

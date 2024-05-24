@@ -28,6 +28,7 @@ import {
   AllProjectsPage,
   AllReviewsPage,
   StudentDetailsPage,
+  NewCourse,
 } from "./core/admin";
 import { EditorHomePage } from "./core/editor";
 import { ClientHomePage } from "./core/client";
@@ -178,6 +179,10 @@ const routes = createBrowserRouter([
         path: "reviews",
         element: <AllReviewsPage />,
       },
+      {
+        path: "new-course",
+        element: <NewCourse />
+      }
     ],
   },
   {

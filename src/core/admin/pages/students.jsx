@@ -20,146 +20,10 @@ import {
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-// Dummy student data
-const students = [
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  {
-    id: 'AKkajBJKHhjajJAHkh',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    dateJoined: '2022-01-15',
-    level: 'Beginner',
-    coursesEnrolled: 5,
-    coursesCompleted: 3,
-    profilePhoto: 'path-to-photo',
-  },
-  // Add more student objects as needed
-  //...
-];
+import { useAdmin } from '../contexts/adminContext';
 
 const AllStudentsPage = () => {
+  const { students, isFetching } = useAdmin();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
@@ -193,6 +57,12 @@ const AllStudentsPage = () => {
     .filter((student) => {
       return filterLevel ? student.level === filterLevel : true;
     });
+
+  if (isFetching) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  console.log("Students data in AllStudentsPage:", students);
 
   return (
     <Container>
@@ -245,7 +115,7 @@ const AllStudentsPage = () => {
             {filteredStudents
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((student) => (
-                <TableRow key={student.id} onClick={() => {navigate(`../student/${student.id}`)}} sx={{
+                <TableRow key={student.id} onClick={() => navigate(`../student/${student.id}`)} sx={{
                   cursor: 'pointer',
                   '&:hover': {
                     backgroundColor: '#f5f5f5',

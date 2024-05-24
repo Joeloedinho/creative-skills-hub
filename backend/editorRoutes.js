@@ -104,4 +104,15 @@ router.post('/verify_email', async (req, res) => {
       res.status(500).send({ message: 'Verification failed. Please try again later.' });
     }
   });
-module.exports = router;
+
+  router.get('/', async (req, res) => {
+    try {
+      const editors = await Editor.find();
+      res.json(editors);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
+module.exports = { router, Editor };

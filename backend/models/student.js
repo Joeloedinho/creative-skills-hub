@@ -1,32 +1,45 @@
-//const express = require('express');
-const jwt = require('jsonwebtoken');
-//const mongoose = require('mongoose');
-//const router = express.Router();
-const studentRouter = require('./studentRoutes');
-const express = require('express');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { generateVerificationCode, sendVerificationEmail } = require('./utils');
 const saltRounds = 10;
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
 
 // Student Schema
 const studentSchema = new mongoose.Schema({
-  fullname: String,
-  gender: String,
-  phone: String,
-  email: { type: String, unique: true },
-  password: String,
-  verificationCode: String,
-  createdAt: { type: Date, default: Date.now, index: { expires: '24h' } },
+  fullname: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true
+  },
+  phone: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  verificationCode: {
+    type: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    index: {
+      expires: '24h'
+    }
+  },
+  profilePic: {
+    type: String,
+    default: 'uploads/default_profile_pic.png'
+  }
 });
-
-const Student = mongoose.model('Student', studentSchema);
-
-const TempRegistration = mongoose.model('TempRegistration', studentSchema);
 
 // Middleware to hash password before saving a document
 studentSchema.pre('save', async function(next) {
@@ -41,24 +54,10 @@ studentSchema.pre('save', async function(next) {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, '/uploads')); // Ensure this directory exists
-  },
-  filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, uniqueSuffix + path.extname(file.originalname)); // Use Date.now() to make each filename unique
-  }
-});
+const Student = mongoose.model('Student', studentSchema);
+const TempRegistration = mongoose.model('TempRegistration', studentSchema);
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image')) {
-      cb(null, true);
-  } else {
-      cb(new Error('Not an image! Please upload only images.'), false);
-  }
+module.exports = {
+  Student,
+  TempRegistration
 };
-
-const upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: 1024 * 1024 * 5 } });
-
-module.exports = { Student, TempRegistration };

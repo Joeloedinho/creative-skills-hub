@@ -8,15 +8,14 @@ const style = {
   color: '#343434'
 };
 
-const ProjectCard = ({ id, project }) => {
-  const navigate = useNavigate();
+const ProjectCard = ({ id, project, onClick }) => {
   return project !== null ? (
     <Grid item xs={12} md={6} >
       <Divider />
       <Stack
         spacing={2}
         justifyContent='center'
-        onClick={() => navigate(`/project/${id}`)}
+        onClick={onClick}
         sx={{
           width: "100%",
           maxWidth: 1200,

@@ -1,27 +1,41 @@
+import { happyMan } from "../assets"
+
 const reviews = [
     {
-        from: 'Adam Smith',
-        role: 'Student',
-        text: 'This platform is amazing. This course is amazing and I love it',
+      profilePic: happyMan,
+      review: 'Thanks for this',
+      dateTime: '2017-02-31',
+      email: "happyman@gmail.com",
+      role: 'editor',
     },
-
     {
-        from: 'Adam Smith',
-        role: 'Student',
-        text: 'This platform is amazing. This course is amazing and I love it',
+      profilePic: happyMan,
+      review: 'Thanks for this',
+      dateTime: '2017-02-31',
+      email: "happyman@gmail.com",
+      role: 'student',
     },
-
     {
-        from: 'Adam Smith',
-        role: 'Student',
-        text: 'This platform is amazing. This course is amazing and I love it',
+      profilePic: happyMan,
+      review: 'Thanks for this',
+      dateTime: '2017-02-31',
+      email: "happyman@gmail.com",
+      role: 'client',
     },
-
     {
-        from: 'Adam Smith',
-        role: 'Student',
-        text: 'This platform is amazing. This course is amazing and I love it',
+      profilePic: happyMan,
+      review: 'Thanks for this',
+      dateTime: '2017-02-31',
+      email: "happyman@gmail.com",
+      role: "editor"
     },
-]
+    {
+      profilePic: happyMan,
+      review: 'Thanks for this',
+      dateTime: '2017-02-31',
+      email: "happyman@gmail.com",
+      role: "student"
+    },
+  ]
 
 export { reviews }

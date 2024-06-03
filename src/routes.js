@@ -33,11 +33,21 @@ import {
   ClientDetailsPage,
   ProjectDetailsPage,
 } from "./core/admin";
-import { EditorHomePage } from "./core/editor";
+import {
+  AcceptedProjects,
+  AllClients,
+  ClientInfo,
+  EditorHomePage,
+  EditorNavbar,
+  EditorProfilePage,
+  EditorProjectPage,
+  EditorProvider,
+} from "./core/editor";
 import { ClientHomePage } from "./core/client";
 import LandingPage from "./core/landing";
 import CourseDetailPage from "./core/admin/pages/course_details";
 import { AdminProvider } from "./core/admin/contexts/adminContext";
+import { ErrorPage } from "./shared";
 
 const routes = createBrowserRouter([
   {
@@ -184,17 +194,45 @@ const routes = createBrowserRouter([
       },
       {
         path: "new-course",
-        element: <NewCourse />
-      }
+        element: <NewCourse />,
+      },
     ],
   },
   {
     path: "editor",
     element: (
       <AuthProvider>
-        <EditorHomePage />
+        <EditorProvider>
+          <EditorNavbar />
+        </EditorProvider>
       </AuthProvider>
     ),
+    children: [
+      {
+        path: "",
+        element: <EditorHomePage />,
+      },
+      {
+        path: "projects/:projectId",
+        element: <EditorProjectPage />,
+      },
+      {
+        path: "clients",
+        element: <AllClients />,
+      },
+      {
+        path: "client/:clientId",
+        element: <ClientInfo />,
+      },
+      {
+        path: "my-projects",
+        element: <AcceptedProjects />,
+      },
+      {
+        path: "profile",
+        element: <EditorProfilePage />,
+      },
+    ],
   },
   {
     path: "client",
@@ -206,7 +244,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/*",
-    element: <Navigate to="/" replace />,
+    element: <ErrorPage />,
   },
 ]);
 

@@ -9,12 +9,9 @@ export default function LandingNavbar() {
   return (
       <Paper elevation={2} sx={{ padding: "5px 15px", position: 'sticky', top: 0, zIndex: 1 }}>
       <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" alignItems="center">
-          <Circle sx={{ fontSize: 30 }} />
           <Link to="/" style={{textDecoration: "none"}}>
             <FullTitleElement isDark={true} fontSize={20} />
           </Link>
-        </Stack>
         <Stack sx={{flexGrow: 1, mx: 2, maxWidth: 400}}>
           <TextField
             id="input-with-icon-textfield"

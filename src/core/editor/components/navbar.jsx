@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import { Circle, Favorite, Search, ShoppingCart } from "@mui/icons-material";
+import { Approval, Circle, Favorite, Search, SettingsApplications, ShoppingCart } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -13,19 +13,10 @@ import {
 } from "@mui/material";
 import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Footer, FullTitleElement } from "../../../shared";
-import useFetch from '../../../hooks/useFetch'; 
-import { useStudent } from '../contexts/studentContext';
 
-export default function StudentNavbar() {
+export default function EditorNavbar() {
   const navigate = useNavigate();
   const theme = useTheme();
-  
-  const { studentData, isFetching, error } = useStudent();
-
-  if (isFetching) return <div>Loading...</div>;
-  if (error) {
-    console.log('Error fetching data: ', error);
-    return <div>Error fetching data: {error}</div>};
 
   return (
     <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>
@@ -35,7 +26,7 @@ export default function StudentNavbar() {
       >
         <Stack direction="row" justifyContent="space-between" alignItems='center'>
           <Stack direction="row" alignItems="center">
-            <Link to="/student" style={{ textDecoration: "none" }}>
+            <Link to="/editor" style={{ textDecoration: "none" }}>
               <FullTitleElement isDark={true} fontSize={20} />
             </Link>
           </Stack>
@@ -59,22 +50,19 @@ export default function StudentNavbar() {
             />
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link to={"/student/my-courses"}>
-              <Button>My Courses</Button>
-            </Link>
-            <Link to={""}>
-              <Button>Contact Admin</Button>
-            </Link>
+            <NavLink to={"./my-projects"}>
+              <Button>My Projects</Button>
+            </NavLink>
+            <NavLink to={"./clients"}>
+              <Button>Clients</Button>
+            </NavLink>
           </Stack>
           <Stack direction='row'>
             <IconButton>
-              <Favorite />
+              <Approval />
             </IconButton>
-            <IconButton>
-              <ShoppingCart />
-            </IconButton>
-            <IconButton onClick={() => navigate('/student/profile')}>
-              <Avatar src={studentData?.profilePic || "default_profile_pic.png"} />
+            <IconButton onClick={() => navigate('./profile')}>
+              <Avatar src={"default_profile_pic.png"} />
             </IconButton>
           </Stack>
         </Stack>
@@ -83,6 +71,7 @@ export default function StudentNavbar() {
         sx={{
           flexGrow: 1,
           width: { xs: "100%", lg: "95%" },
+          maxWidth: 1400,
           marginX: "auto",
           overflow: "auto",
         }}

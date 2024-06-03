@@ -30,7 +30,6 @@ export default function AdminNavbar() {
           alignItems="center"
         >
           <Stack direction="row" alignItems="center">
-            <Circle sx={{ fontSize: 30 }} />
             <Link to="/admin" style={{ textDecoration: "none" }}>
               <FullTitleElement isDark={true} fontSize={20} />
             </Link>

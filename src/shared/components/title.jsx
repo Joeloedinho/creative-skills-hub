@@ -21,6 +21,10 @@ const FullTitleElement = ({ isDark = false, fontSize = 30 }) => {
         color: theme.palette.primary.main,
         textAlign: "center",
         textDecoration: "none",
+        display: {
+          xs: 'none',
+          lg: 'block',
+        }
       }}
     >
       Creative Skills Hub

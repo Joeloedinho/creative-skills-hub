@@ -13,7 +13,7 @@ import {
 import {
   CoursePage,
   EnrolledCourses,
-  ProfilePage,
+  ProfilePage as StudentProfilePage,
   StudentHomePage,
   StudentNavbar,
   StudentProvider,
@@ -32,6 +32,8 @@ import {
   EditorDetailsPage,
   ClientDetailsPage,
   ProjectDetailsPage,
+    AdminProvider,
+    CourseDetailPage
 } from "./core/admin";
 import {
   AcceptedProjects,
@@ -43,10 +45,16 @@ import {
   EditorProjectPage,
   EditorProvider,
 } from "./core/editor";
-import { ClientHomePage } from "./core/client";
+import {
+  AddProjectPage,
+  ProjectPage,
+  ClientHomePage,
+  ClientNavbar,
+  ClientsProjects,
+  ProfilePage as ClientProfilePage,
+  EditorsPage, EditorsInfo, ClientProvider
+} from "./core/client";
 import LandingPage from "./core/landing";
-import CourseDetailPage from "./core/admin/pages/course_details";
-import { AdminProvider } from "./core/admin/contexts/adminContext";
 import { ErrorPage } from "./shared";
 
 const routes = createBrowserRouter([
@@ -126,7 +134,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+        element: <StudentProfilePage />,
       },
       {
         path: "my-courses",
@@ -238,9 +246,41 @@ const routes = createBrowserRouter([
     path: "client",
     element: (
       <AuthProvider>
-        <ClientHomePage />
+        <ClientProvider>
+          <ClientNavbar />
+        </ClientProvider>
       </AuthProvider>
     ),
+    children: [
+      {
+        path: "",
+        element: <ClientHomePage />
+      },
+      {
+        path: "clients-projects",
+        element: <ClientsProjects />,
+      },
+      {
+        path: "projects/:projectId",
+        element: <ProjectPage />
+      },
+      {
+        path: "add-project",
+        element: <AddProjectPage />
+      },
+      {
+        path: "editors",
+        element: <EditorsPage />
+      },
+      {
+        path: "editor/:editorID",
+        element: <EditorsInfo />
+      },
+      {
+        path: "profile",
+        element: <ClientProfilePage />
+      }
+    ]
   },
   {
     path: "/*",

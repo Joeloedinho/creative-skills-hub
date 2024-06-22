@@ -1,18 +1,25 @@
 import { Circle, Search } from "@mui/icons-material";
-import { Box, Button, InputAdornment, Paper, Stack, TextField } from "@mui/material";
+import {alpha, Box, Button, hexToRgb, InputAdornment, Paper, Stack, TextField, useTheme} from "@mui/material";
 import React from "react";
 import { FullTitleElement } from "./title";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 // TOD0: Disappearing navbar
 export default function LandingNavbar() {
+  const theme = useTheme();
   return (
-      <Paper elevation={2} sx={{ padding: "5px 15px", position: 'sticky', top: 0, zIndex: 1 }}>
+      <Paper elevation={0} sx={{
+        padding: "0 5px",
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        backgroundColor: alpha(theme.palette.background.default, 0.8)}}
+      >
       <Stack direction="row" justifyContent="space-between">
           <Link to="/" style={{textDecoration: "none"}}>
             <FullTitleElement isDark={true} fontSize={20} />
           </Link>
-        <Stack sx={{flexGrow: 1, mx: 2, maxWidth: 400}}>
+        {/* <Stack sx={{flexGrow: 1, mx: 2, maxWidth: 400}}>
           <TextField
             id="input-with-icon-textfield"
             fullWidth
@@ -30,7 +37,7 @@ export default function LandingNavbar() {
             }}
             variant="outlined"
           />
-        </Stack>
+        </Stack> */}
         <Stack direction="row" alignItems="center" spacing={1}>
           <NavLink to={"/about"}>
             <Button>About Us</Button>
@@ -41,7 +48,9 @@ export default function LandingNavbar() {
           <NavLink to={"/auth/register/client"}>
             <Button>Become a Client</Button>
           </NavLink>
-          <NavLink to={"/auth/login"}>
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={1}>
+        <NavLink to={"/auth/login"}>
             <Button variant="outlined">Login</Button>
           </NavLink>
           <NavLink to={"/auth/register"}>

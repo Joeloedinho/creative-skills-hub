@@ -14,6 +14,7 @@ import {
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hooks";
 import { primaryLogo } from "../../../assets";
+import {useColors} from "../../../shared";
 
 const project = {
   dateAdded: "Yesterday",
@@ -33,6 +34,7 @@ const project = {
 const EditorsProjectPage = () => {
   const navigate = useNavigate();
   const alert = useAlert();
+  const colors = useColors();
   const [state, setState] = useState({
     status: "Open",
     btnStatus: "Apply Now",
@@ -69,7 +71,7 @@ const EditorsProjectPage = () => {
             alignItems="center"
             sx={{
               cursor: "pointer",
-              "&:hover": { backgroundColor: "#f5f5f5" },
+              "&:hover": { backgroundColor: colors.hoverColor },
             }}
             onClick={() => navigate(`/editor/clients/${client.id}`)}
           >

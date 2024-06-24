@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {useColors} from "../../../shared";
 
 // Dummy review data
 const reviews = [
@@ -50,6 +51,7 @@ const AllReviewsPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const colors = useColors();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -135,7 +137,7 @@ const AllReviewsPage = () => {
                     key={review.id}
                     sx={{
                       cursor: "pointer",
-                      "&:hover": { backgroundColor: "#f5f5f5" },
+                      "&:hover": colors.hoverColor,
                     }}
                   >
                     <TableCell>

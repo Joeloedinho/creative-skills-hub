@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react'; 
-import { Approval, Circle, Favorite, Search, SettingsApplications, ShoppingCart } from "@mui/icons-material";
+import {
+    Approval,
+    Circle,
+    Favorite,
+    Nightlight,
+    Search,
+    SettingsApplications,
+    ShoppingCart,
+    WbSunny
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -12,11 +21,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { Footer, FullTitleElement } from "../../../shared";
+import {Footer, FullTitleElement, useTheme as useThemeMode} from "../../../shared";
 
 export default function EditorNavbar() {
   const navigate = useNavigate();
   const theme = useTheme();
+    const themeMode = useThemeMode();
 
   return (
     <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>
@@ -58,9 +68,15 @@ export default function EditorNavbar() {
             </NavLink>
           </Stack>
           <Stack direction='row'>
-            <IconButton>
-              <Approval />
-            </IconButton>
+              <IconButton onClick={() => {
+                  themeMode.toggleTheme()
+              }}>
+                  {
+                      themeMode.isDarkMode
+                          ? <WbSunny />
+                          : <Nightlight />
+                  }
+              </IconButton>
             <IconButton onClick={() => navigate('./profile')}>
               <Avatar src={"default_profile_pic.png"} />
             </IconButton>

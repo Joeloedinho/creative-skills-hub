@@ -1,12 +1,25 @@
-import { Circle, Search } from "@mui/icons-material";
-import {alpha, Box, Button, hexToRgb, InputAdornment, Paper, Stack, TextField, useTheme} from "@mui/material";
+import {Circle, Nightlight, Search, ShieldMoon, WbSunny} from "@mui/icons-material";
+import {
+    alpha,
+    Box,
+    Button,
+    hexToRgb,
+    IconButton,
+    InputAdornment,
+    Paper,
+    Stack,
+    TextField,
+    useTheme
+} from "@mui/material";
 import React from "react";
 import { FullTitleElement } from "./title";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import {useTheme as useThemeMode} from "../theme";
 
 // TOD0: Disappearing navbar
 export default function LandingNavbar() {
   const theme = useTheme();
+  const themeMode = useThemeMode();
   return (
       <Paper elevation={0} sx={{
         padding: "0 5px",
@@ -50,6 +63,15 @@ export default function LandingNavbar() {
           </NavLink>
         </Stack>
         <Stack direction="row" alignItems="center" spacing={1}>
+            <IconButton onClick={() => {
+                themeMode.toggleTheme()
+            }}>
+                {
+                    themeMode.isDarkMode
+                        ? <WbSunny />
+                        : <Nightlight />
+                }
+            </IconButton>
         <NavLink to={"/auth/login"}>
             <Button variant="outlined">Login</Button>
           </NavLink>

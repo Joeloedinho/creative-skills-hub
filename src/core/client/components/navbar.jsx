@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Approval, Circle, Favorite, Search, SettingsApplications, ShoppingCart } from "@mui/icons-material";
+import {
+    AddOutlined,
+    Approval,
+    Circle,
+    Favorite,
+    Nightlight,
+    Search,
+    SettingsApplications,
+    ShoppingCart,
+    WbSunny
+} from "@mui/icons-material";
 import {
     Avatar,
     Box,
@@ -12,11 +22,12 @@ import {
     useTheme,
 } from "@mui/material";
 import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { Footer, FullTitleElement } from "../../../shared";
+import {Footer, FullTitleElement, useTheme as useThemeMode} from "../../../shared";
 
 export default function ClientNavbar() {
     const navigate = useNavigate();
     const theme = useTheme();
+    const themeMode = useThemeMode();
 
     return (
         <Stack sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh'}}>
@@ -49,18 +60,25 @@ export default function ClientNavbar() {
                             variant="outlined"
                         />
                     </Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                        <NavLink to={"./clients-projects"}>
-                            <Button>My Projects</Button>
-                        </NavLink>
-                        <NavLink to={"./editors"}>
-                            <Button>Editors</Button>
-                        </NavLink>
-                    </Stack>
+                    {/*<Stack direction="row" alignItems="center" spacing={1}>*/}
+                    {/*    <NavLink to={"./clients-projects"}>*/}
+                    {/*        <Button>My Projects</Button>*/}
+                    {/*    </NavLink>*/}
+                    {/*    <NavLink to={"./editors"}>*/}
+                    {/*        <Button>Editors</Button>*/}
+                    {/*    </NavLink>*/}
+                    {/*</Stack>*/}
                     <Stack direction='row'>
-                        <IconButton>
-                            <Approval />
+                        <IconButton onClick={() => {
+                            themeMode.toggleTheme()
+                        }}>
+                            {
+                                themeMode.isDarkMode
+                                    ? <WbSunny />
+                                    : <Nightlight />
+                            }
                         </IconButton>
+                        <Button startIcon={<AddOutlined />} variant='text'>Add Project</Button>
                         <IconButton onClick={() => navigate('./profile')}>
                             <Avatar src={"default_profile_pic.png"} />
                         </IconButton>

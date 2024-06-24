@@ -1,5 +1,5 @@
 import React from "react";
-import { Circle } from "@mui/icons-material";
+import {Circle, Nightlight, WbSunny} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -8,11 +8,11 @@ import {
   Stack, useTheme
 } from "@mui/material";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Footer, FullTitleElement } from "../../../shared";
+import {Footer, FullTitleElement, useTheme as useThemeMode} from "../../../shared";
 
 export default function AdminNavbar() {
   const theme = useTheme();
-
+  const themeMode = useThemeMode();
   return (
     <Stack
       sx={{
@@ -52,6 +52,15 @@ export default function AdminNavbar() {
             </NavLink>
           </Stack>
           <Stack direction="row">
+            <IconButton onClick={() => {
+              themeMode.toggleTheme()
+            }}>
+              {
+                themeMode.isDarkMode
+                    ? <WbSunny />
+                    : <Nightlight />
+              }
+            </IconButton>
             <IconButton>
               <Avatar src={"default_profile_pic.png"} />
             </IconButton>

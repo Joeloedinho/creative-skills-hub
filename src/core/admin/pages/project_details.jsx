@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Grid, Chip, Divider, Paper, Container } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
+import {useColors} from "../../../shared";
 
 const project = {
     dateAdded: 'Yesterday',
@@ -19,6 +20,7 @@ const project = {
 
 const ProjectDetailsPage = () => {
     const navigate = useNavigate();
+    const colors = useColors();
     
   return (
     <Container>
@@ -63,7 +65,7 @@ const ProjectDetailsPage = () => {
           </Grid>
           <Grid item xs={6} sx={{
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  "&:hover": { backgroundColor: colors.hoverColor },
                 }}
                 onClick={() => navigate(`/admin/client/${project.client}`)}
                 >

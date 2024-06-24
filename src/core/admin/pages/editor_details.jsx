@@ -21,6 +21,7 @@ import {
 import { courseCardImg } from "../../../assets";
 import { Email, Phone } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {useColors} from "../../../shared";
 
 // Dummy editor data
 const editor = {
@@ -79,6 +80,7 @@ const editor = {
 const EditorDetailsPage = () => {
   const [level, setLevel] = useState(editor.level);
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleLevelChange = (event) => {
     setLevel(event.target.value);
@@ -165,14 +167,14 @@ const EditorDetailsPage = () => {
                 onClick={() => navigate(`/admin/project/${project.id}`)}
                 sx={{
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  "&:hover": { backgroundColor: colors.hoverColor },
                 }}
               >
                 <ListItemText
                   primary={project.title}
                   sx={{
                     cursor: "pointer",
-                    "&:hover": { backgroundColor: "#f5f5f5" },
+                    "&:hover": { backgroundColor: colors.hoverColor },
                   }}
                   onClick={() => navigate(`/admin/clients/${project.client}`)}
                   secondary={`Client: ${project.client}`}

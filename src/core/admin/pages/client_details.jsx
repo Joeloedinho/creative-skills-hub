@@ -21,6 +21,7 @@ import {
 import { courseCardImg } from "../../../assets";
 import { Email, Phone } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {useColors} from "../../../shared";
 
 // Dummy client data
 const client = {
@@ -80,6 +81,7 @@ const client = {
 const ClientDetailsPage = () => {
   const [level, setLevel] = useState(client.level);
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleLevelChange = (event) => {
     setLevel(event.target.value);
@@ -145,18 +147,18 @@ const ClientDetailsPage = () => {
                 onClick={() => navigate(`/admin/project/${project.id}`)}
                 sx={{
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  "&:hover": { backgroundColor: colors.hoverColor },
                 }}
               >
                 <ListItemText
                   primary={project.title}
-                  sx={{"&:hover": { backgroundColor: "#d3d3d3"}}}
+                  sx={{"&:hover": { backgroundColor: colors.hoverColor}}}
                   onClick={() => navigate(`/admin/editor/${project.editor}`)}
                   secondary={`Editor: ${project.editor}`}
                 />
                 <Box width="50%">
                   <Typography>Status</Typography>
-                  <Chip sx={{backgroundColor: project.status == "completed" ? "green" : "lightgray"}} label={project.status} />
+                  <Chip sx={{backgroundColor: project.status === "completed" ? "green" : "lightgray"}} label={project.status} />
                 </Box>
                 <Typography>{project.level}</Typography>
 

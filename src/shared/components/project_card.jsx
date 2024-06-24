@@ -1,6 +1,7 @@
 import { Favorite, LocalOffer, Person, Tag } from "@mui/icons-material";
 import { Box, Card, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import {useColors} from "../theme";
 
 const style = {
   fontWeight: 600,
@@ -8,9 +9,10 @@ const style = {
   color: '#343434'
 };
 
-const ProjectCard = ({ id, project, onClick }) => {
+const ProjectCard = ({ id, project, onClick, fullWidth = false }) => {
+    const colors = useColors();
   return project !== null ? (
-    <Grid item xs={12} md={6} >
+    <Grid item xs={12} md={fullWidth ? 12 : 6} lg={fullWidth ? 10 : 6}>
       <Divider />
       <Stack
         spacing={2}
@@ -18,9 +20,9 @@ const ProjectCard = ({ id, project, onClick }) => {
         onClick={onClick}
         sx={{
           width: "100%",
-          maxWidth: 1200,
           margin: '5px auto',
           padding: 1,
+            "&:hover": { backgroundColor: colors.hoverColor },
         }}
         className="project-card"
       >

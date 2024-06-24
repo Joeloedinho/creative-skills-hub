@@ -21,6 +21,7 @@ import {
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../contexts/adminContext';
+import {useColors} from "../../../shared";
 
 const AllStudentsPage = () => {
   const { students, isFetching } = useAdmin();
@@ -29,6 +30,7 @@ const AllStudentsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterLevel, setFilterLevel] = useState('');
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -118,7 +120,7 @@ const AllStudentsPage = () => {
                 <TableRow key={student.id} onClick={() => navigate(`../student/${student.id}`)} sx={{
                   cursor: 'pointer',
                   '&:hover': {
-                    backgroundColor: '#f5f5f5',
+                    backgroundColor: colors.hoverColor,
                   },
                 }}>
                   <TableCell>

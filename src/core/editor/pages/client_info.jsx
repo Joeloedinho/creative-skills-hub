@@ -21,6 +21,7 @@ import {
 import { courseCardImg } from "../../../assets";
 import { Email, Phone } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {useColors} from "../../../shared";
 
 // Dummy client data
 const client = {
@@ -80,6 +81,7 @@ const client = {
 const ClientInfo = () => {
   const [level, setLevel] = useState(client.level);
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleLevelChange = (event) => {
     setLevel(event.target.value);
@@ -145,7 +147,7 @@ const ClientInfo = () => {
                 onClick={() => navigate(`/editor/project/${project.id}`)}
                 sx={{
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  "&:hover": { backgroundColor: colors.hoverColor },
                 }}
               >
                 <ListItemText

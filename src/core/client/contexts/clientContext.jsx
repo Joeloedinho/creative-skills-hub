@@ -3,7 +3,7 @@ import {AlertPopper} from "../../../shared";
 
 const ClientContext = createContext();
 
-const useClient = useContext(ClientContext);
+const useClient = () => useContext(ClientContext);
 
 const ClientProvider = ({children}) => {
     const [client, setClient] = useState(null);

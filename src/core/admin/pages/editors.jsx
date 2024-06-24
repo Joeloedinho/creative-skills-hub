@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {useColors} from "../../../shared";
 
 // Dummy editor data
 const editors = [
@@ -42,6 +43,7 @@ const AllEditorsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterRole, setFilterRole] = useState("");
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -126,7 +128,7 @@ const AllEditorsPage = () => {
                     onClick={() => navigate(`../editor/${editor.id}`)}
                     sx={{
                       cursor: "pointer",
-                      "&:hover": { backgroundColor: "#f5f5f5" },
+                      "&:hover": { backgroundColor: colors.hoverColor },
                     }}
                   >
                     <TableCell>

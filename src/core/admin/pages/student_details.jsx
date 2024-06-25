@@ -19,6 +19,7 @@ import {
 import { Email, Phone } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAdmin } from "../contexts/adminContext";
+import {useColors} from "../../../shared";
 
 const StudentDetailsPage = () => {
   const { studentID } = useParams();
@@ -26,6 +27,7 @@ const StudentDetailsPage = () => {
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const colors = useColors();
 
   useEffect(() => {
     const fetchStudentDetails = () => {
@@ -134,7 +136,7 @@ const StudentDetailsPage = () => {
                   onClick={() => navigate(`/admin/course/${course.id}`)}
                   sx={{
                     cursor: "pointer",
-                    "&:hover": { backgroundColor: "#f5f5f5" },
+                    "&:hover": { backgroundColor: colors.hoverColor },
                   }}
                 >
                   <ListItemAvatar>

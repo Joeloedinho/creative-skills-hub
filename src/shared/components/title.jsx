@@ -1,4 +1,5 @@
 import { Stack, Typography, useTheme } from "@mui/material";
+import { primaryLogo } from "../../assets";
 
 const FullTitleElement = ({ isDark = false, fontSize = 30 }) => {
   const theme = useTheme();
@@ -11,17 +12,24 @@ const FullTitleElement = ({ isDark = false, fontSize = 30 }) => {
     fontWeight: 700,
   };
   return (
-    <Typography
+    <Stack direction="row" alignItems="center">
+      <img src={primaryLogo} alt="logo" width='75px'/>
+      <Typography
       variant="h4"
       sx={{
         ...titleStyle,
         color: theme.palette.primary.main,
         textAlign: "center",
         textDecoration: "none",
+        display: {
+          xs: 'none',
+          lg: 'block',
+        }
       }}
     >
       Creative Skills Hub
     </Typography>
+    </Stack>
   );
 };
 

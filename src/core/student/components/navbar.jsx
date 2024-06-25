@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import { Circle, Favorite, Search, ShoppingCart } from "@mui/icons-material";
+import {Circle, Favorite, Nightlight, Search, ShoppingCart, WbSunny} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -12,13 +12,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link, NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { Footer, FullTitleElement } from "../../../shared";
+import {Footer, FullTitleElement, useTheme as useThemeMode} from "../../../shared";
 import useFetch from '../../../hooks/useFetch'; 
 import { useStudent } from '../contexts/studentContext';
 
 export default function StudentNavbar() {
   const navigate = useNavigate();
   const theme = useTheme();
+  const themeMode = useThemeMode();
   
   const { studentData, isFetching, error } = useStudent();
 
@@ -35,7 +36,6 @@ export default function StudentNavbar() {
       >
         <Stack direction="row" justifyContent="space-between" alignItems='center'>
           <Stack direction="row" alignItems="center">
-            <Circle sx={{ fontSize: 30 }} />
             <Link to="/student" style={{ textDecoration: "none" }}>
               <FullTitleElement isDark={true} fontSize={20} />
             </Link>
@@ -68,11 +68,17 @@ export default function StudentNavbar() {
             </Link>
           </Stack>
           <Stack direction='row'>
-            <IconButton>
-              <Favorite />
+            <IconButton onClick={() => {
+              themeMode.toggleTheme()
+            }}>
+              {
+                themeMode.isDarkMode
+                    ? <WbSunny />
+                    : <Nightlight />
+              }
             </IconButton>
             <IconButton>
-              <ShoppingCart />
+              <Favorite />
             </IconButton>
             <IconButton onClick={() => navigate('/student/profile')}>
               <Avatar src={studentData?.profilePic || "default_profile_pic.png"} />

@@ -145,7 +145,7 @@ const LandingPage = () => {
       spacing={2}
       sx={{
         flexGrow: 1,
-        width: { xs: "100%", lg: "95%" },
+        width: "100%",
         marginX: "auto",
         overflow: "auto",
       }}

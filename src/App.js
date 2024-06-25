@@ -1,12 +1,11 @@
 import { RouterProvider } from "react-router-dom";
 import routes from "./routes";
-import { ThemeProvider } from "@mui/material";
-import { lightTheme } from "./shared";
 import { AlertProvider } from './hooks';
+import {ThemeProvider} from "./shared";
 
 function App() {
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider>
       <AlertProvider>
         <RouterProvider router={routes} />
       </AlertProvider>

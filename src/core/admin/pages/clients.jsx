@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import {useColors} from "../../../shared";
 
 // Dummy client data
 const clients = [
@@ -50,6 +51,7 @@ const AllClientsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -127,7 +129,7 @@ const AllClientsPage = () => {
               {filteredClients
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((client) => (
-                  <TableRow key={client.id} onClick={() => navigate(`../client/${client.id}`)} sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}>
+                  <TableRow key={client.id} onClick={() => navigate(`../client/${client.id}`)} sx={{ cursor: 'pointer', '&:hover': { backgroundColor: colors.hoverColor } }}>
                     <TableCell>
                       <Box display="flex" alignItems="center">
                         <Avatar src={client.profilePhoto} alt={client.name} sx={{ mr: 2 }} />

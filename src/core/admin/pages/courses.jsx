@@ -22,6 +22,7 @@ import {
 import { Add, Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { courseCardImg } from "../../../assets";
+import {useColors} from "../../../shared";
 
 // Dummy course data
 const courses = [
@@ -53,6 +54,7 @@ const AllCoursesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterLevel, setFilterLevel] = useState("");
   const navigate = useNavigate();
+  const colors = useColors();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -146,7 +148,7 @@ const AllCoursesPage = () => {
                     sx={{
                       cursor: "pointer",
                       "&:hover": {
-                        backgroundColor: "#f5f5f5",
+                        backgroundColor: colors.hoverColor,
                       },
                     }}
                   >

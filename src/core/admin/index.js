@@ -12,6 +12,7 @@ import NewCourse from "./pages/new_course";
 import EditorDetailsPage from "./pages/editor_details";
 import ClientDetailsPage from "./pages/client_details";
 import ProjectDetailsPage from "./pages/project_details";
+import CourseDetailPage from "./pages/course_details";
 
 export {
   AdminDashboard,
@@ -29,4 +30,5 @@ export {
   EditorDetailsPage,
   ClientDetailsPage,
   ProjectDetailsPage,
+  CourseDetailPage,
 };

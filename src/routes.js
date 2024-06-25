@@ -13,7 +13,7 @@ import {
 import {
   CoursePage,
   EnrolledCourses,
-  ProfilePage,
+  ProfilePage as StudentProfilePage,
   StudentHomePage,
   StudentNavbar,
   StudentProvider,
@@ -32,12 +32,30 @@ import {
   EditorDetailsPage,
   ClientDetailsPage,
   ProjectDetailsPage,
+    AdminProvider,
+    CourseDetailPage
 } from "./core/admin";
-import { EditorHomePage } from "./core/editor";
-import { ClientHomePage } from "./core/client";
+import {
+  AcceptedProjects,
+  AllClients,
+  ClientInfo,
+  EditorHomePage,
+  EditorNavbar,
+  EditorProfilePage,
+  EditorProjectPage,
+  EditorProvider,
+} from "./core/editor";
+import {
+  AddProjectPage,
+  ProjectPage,
+  ClientHomePage,
+  ClientNavbar,
+  ClientsProjects,
+  ProfilePage as ClientProfilePage,
+  EditorsPage, EditorsInfo, ClientProvider
+} from "./core/client";
 import LandingPage from "./core/landing";
-import CourseDetailPage from "./core/admin/pages/course_details";
-import { AdminProvider } from "./core/admin/contexts/adminContext";
+import { ErrorPage } from "./shared";
 
 const routes = createBrowserRouter([
   {
@@ -116,7 +134,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+        element: <StudentProfilePage />,
       },
       {
         path: "my-courses",
@@ -184,29 +202,89 @@ const routes = createBrowserRouter([
       },
       {
         path: "new-course",
-        element: <NewCourse />
-      }
+        element: <NewCourse />,
+      },
     ],
   },
   {
     path: "editor",
     element: (
       <AuthProvider>
-        <EditorHomePage />
+        <EditorProvider>
+          <EditorNavbar />
+        </EditorProvider>
       </AuthProvider>
     ),
+    children: [
+      {
+        path: "",
+        element: <EditorHomePage />,
+      },
+      {
+        path: "projects/:projectId",
+        element: <EditorProjectPage />,
+      },
+      {
+        path: "clients",
+        element: <AllClients />,
+      },
+      {
+        path: "client/:clientId",
+        element: <ClientInfo />,
+      },
+      {
+        path: "my-projects",
+        element: <AcceptedProjects />,
+      },
+      {
+        path: "profile",
+        element: <EditorProfilePage />,
+      },
+    ],
   },
   {
     path: "client",
     element: (
       <AuthProvider>
-        <ClientHomePage />
+        <ClientProvider>
+          <ClientNavbar />
+        </ClientProvider>
       </AuthProvider>
     ),
+    children: [
+      {
+        path: "",
+        element: <ClientHomePage />
+      },
+      {
+        path: "clients-projects",
+        element: <ClientsProjects />,
+      },
+      {
+        path: "projects/:projectId",
+        element: <ProjectPage />
+      },
+      {
+        path: "add-project",
+        element: <AddProjectPage />
+      },
+      {
+        path: "editors",
+        element: <EditorsPage />
+      },
+      {
+        path: "editor/:editorID",
+        element: <EditorsInfo />
+      },
+      {
+        path: "profile",
+        element: <ClientProfilePage />
+      }
+    ]
   },
   {
     path: "/*",
-    element: <Navigate to="/" replace />,
+    element: <ErrorPage />,
   },
 ]);
 

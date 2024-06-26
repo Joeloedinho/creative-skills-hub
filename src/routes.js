@@ -56,6 +56,7 @@ import {
 } from "./core/client";
 import LandingPage from "./core/landing";
 import { ErrorPage } from "./shared";
+import NewProject from "./core/client/pages/new_project";
 
 const routes = createBrowserRouter([
   {
@@ -266,7 +267,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "add-project",
-        element: <AddProjectPage />
+        element: <NewProject />
       },
       {
         path: "editors",

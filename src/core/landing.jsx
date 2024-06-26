@@ -87,7 +87,10 @@ const LandingPage = () => {
       justifyContent="space-evenly"
       spacing={2}
       sx={{
-        height: 400,
+        height: {
+          xs: 400,
+          md: 600,
+        },
         width: "100%",
         overflow: "hidden",
         backgroundImage: `url(${role.img})`,
@@ -110,11 +113,11 @@ const LandingPage = () => {
       </Stack>
       <Typography
         variant="h4"
-        sx={{ fontWeight: 800, alignSelf: role.alignTo }}
+        sx={{ fontWeight: 800, alignSelf: "start" }}
       >
         For {role.name}
       </Typography>
-      <Box sx={{ maxWidth: 400, alignSelf: role.alignTo }}>
+      <Box sx={{ maxWidth: 400, alignSelf: "start" }}>
         <Typography
           variant="body"
           sx={{ color: "white", fontSize: { xs: 18, md: 22 } }}
@@ -122,7 +125,7 @@ const LandingPage = () => {
           {role.info}
         </Typography>
       </Box>
-      <Link to={role.path} style={{ alignSelf: role.alignTo }}>
+      <Link to={role.path} style={{ alignSelf: "start" }}>
         <Button variant="contained">{role.action}</Button>
       </Link>
     </Stack>
@@ -154,10 +157,7 @@ const LandingPage = () => {
         <Box
           sx={{
             width: "100%",
-            maxWidth: 1200,
-            padding: { xs: 1, sm: 2, md: 4 },
             position: "relative",
-            maxHeight: 800,
             marginX: "auto",
           }}
         >
@@ -179,7 +179,7 @@ const LandingPage = () => {
           />
         </Box>
       </Stack>
-      <Stack spacing={2} sx={{padding: 2}}>
+      <Stack spacing={5} sx={{padding: 2}}>
         <Divider />
         <Typography variant="h5" color="primary" fontWeight="bold">
           COURSES

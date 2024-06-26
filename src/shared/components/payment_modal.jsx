@@ -7,18 +7,19 @@ import {
   Typography,
   Chip,
   Button,
-  Paper,
+  Paper, useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { MTNIcon } from "../../assets";
 import { useAlert } from "../../hooks/useAlert";
 
-const PaymentModal = ({ isOpen, handleClose, title, amount }) => {
+const PaymentModal = ({ isOpen, handleClose, title, amount, isSending = false }) => {
   const [accountNumber, setAccountNumber] = useState("");
   const [accountNumberError, setAccountNumberError] = useState("");
 
   const [accountName, setAccountName] = useState("");
   const [accountNameError, setAccountNameError] = useState("");
+  const theme = useTheme();
   const alert = useAlert();
 
   // const [showAlert, setShowAlert] = useState(false);
@@ -58,7 +59,7 @@ const PaymentModal = ({ isOpen, handleClose, title, amount }) => {
         noValidate
         className="modal-body"
         sx={{
-          background: "white",
+          background: theme.palette.background.main,
           padding: "10px 17px",
           borderRadius: { xs: "0", sm: "5" },
           maxWidth: { xs: "100vw", sm: "350px" },
@@ -126,7 +127,7 @@ const PaymentModal = ({ isOpen, handleClose, title, amount }) => {
               color="primary"
               sx={{ flexGrow: 1 }}
             >
-              Purchase
+              { isSending ? "Deposit" : "Purchase" }
             </Button>
           </Stack>
         </Stack>

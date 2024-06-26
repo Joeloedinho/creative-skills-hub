@@ -3,11 +3,11 @@ import {
     Box,
     Button,
     Container,
-    FormControl,
+    FormControl, Input,
     InputLabel,
     MenuItem,
     Paper,
-    Select,
+    Select, Stack,
     TextField,
     Typography,
     useTheme,
@@ -16,97 +16,98 @@ import { useAlert } from "../../../hooks";
 import MUIRichTextEditor from "mui-rte";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Category } from "@mui/icons-material";
+import {AttachFile, Category} from "@mui/icons-material";
 
 const AddProjectPage = ({ onDone, setData, data }) => {
-    const [imagePreview, setImagePreview] = useState(data.imageFile != null ? URL.createObjectURL(data.imageFile) : null);
-    const [courseOverview, setCourseOverview] = useState("");
+    const [briefingPreview, setBriefingPreview] = useState(data.imageFile != null ? URL.createObjectURL(data.imageFile) : null);
+    const [projectOverview, setProjectOverview] = useState("");
     const alert = useAlert();
     const theme = useTheme();
 
     const formik = useFormik({
         initialValues: {
             title: data.title,
-            description: data.description,
             level: data.level,
-            categories: data.categories,
+            skills: data.skills,
             overview: data.overview,
-            imageFile: data.imageFile,
+            briefingFile: data.briefingFile,
+            duration: data.duration,
+            price: data.price,
+            dateUploaded: data.dateUploaded,
+            installments: data.installments,
         },
         validationSchema: Yup.object({
             title: Yup.string().required("Title is required"),
-            description: Yup.string().required("Description is required"),
+            overview: Yup.string(),
             level: Yup.string().required("Level is required"),
-            imageFile: Yup.mixed().required("Image is required"),
+            briefingFile: Yup.mixed().required("Brief is required"),
+            skills: Yup.array().min(1, "Atleast 1 skill is required"),
+            installments : Yup.number().required("Installments is required"),
+            durationLength: Yup.string().required("Duration Length is required"),
         }),
         onSubmit: (values) => {
             // Handle form submission logic here
             setData((prev) => ({
                 ...prev,
                 title: values.title,
-                description: values.description,
+                installments: values.installments,
+                durationLength: values.durationLength,
+                duration: values.duration,
+                price: values.price,
                 level: values.level,
-                categories: values.categories,
+                skills: values.skills,
                 overview: values.overview,
-                imageFile: values.imageFile,
+                briefingFile: values.briefingFile,
             }));
-            console.log("Values", values, "Data", courseOverview);
+            console.log("Values", values, "Data", projectOverview);
             onDone();
         },
     });
 
-    const handleImageChange = (event) => {
+    const handleFileChange = (event) => {
         const file = event.target.files[0];
-        if (file.size > 2 * 1024 * 1024) {
-            alert.show({
-                message: "Image size should not exceed 2MB",
-                type: "error",
-                duration: 5000,
-            });
-            return;
-        }
-        formik.setFieldValue("imageFile", file);
-        setImagePreview(URL.createObjectURL(file));
+        // if (file.size > 2 * 1024 * 1024) {
+        //     alert.show({
+        //         message: "Image size should not exceed 2MB",
+        //         type: "error",
+        //         duration: 5000,
+        //     });
+        //     return;
+        // }
+        formik.setFieldValue("briefingFile", file);
+        console.log("File", file)
+        setBriefingPreview(file.name);
     };
 
     return (
         <Container>
             <Box sx={{ width: "100%", maxWidth: "700px", margin: "0 auto" }}>
                 <Typography variant="h4" gutterBottom>
-                    Create New Course
+                    Add Project
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
                     <Box mt={2}>
-                        <InputLabel htmlFor="image">Course Image:</InputLabel>
-                        <input
+                        <InputLabel htmlFor="brief">Project Brief:</InputLabel>
+                        <Input
                             type="file"
-                            id="image"
-                            accept="image/*"
-                            onChange={handleImageChange}
+                            id='brief'
+                            onChange={handleFileChange}
                             style={{ display: "none" }}
                         />
-                        <label htmlFor="image">
+                        <label htmlFor="brief">
                             <Button variant="contained" component="span">
-                                Upload Image
+                                Upload Brief
                             </Button>
                         </label>
-                        {formik.errors.imageFile && (
-                            <Typography color="error">{formik.errors.imageFile}</Typography>
+                        {formik.errors.briefingFile && (
+                            <Typography color="error">{formik.errors.briefingFile}</Typography>
                         )}
                     </Box>
-                    {imagePreview && (
-                        <Box mt={2}>
-                            <img
-                                src={imagePreview}
-                                alt="Course Preview"
-                                style={{
-                                    maxHeight: 500,
-                                    minWidth: 300,
-                                    display: "block",
-                                    margin: "0 auto",
-                                }}
-                            />
-                        </Box>
+                    {briefingPreview && (
+                        <Stack direction="row" spacing={2}>
+                            <AttachFile />
+                            <Typography color="success">{briefingPreview}</Typography>
+                        </Stack>
                     )}
                     <TextField
                         label="Title"
@@ -117,20 +118,6 @@ const AddProjectPage = ({ onDone, setData, data }) => {
                         name="title"
                         error={formik.touched.title && Boolean(formik.errors.title)}
                         helperText={formik.touched.title && formik.errors.title}
-                    />
-                    <TextField
-                        label="Description"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        margin="normal"
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
-                        name="description"
-                        error={
-                            formik.touched.description && Boolean(formik.errors.description)
-                        }
-                        helperText={formik.touched.description && formik.errors.description}
                     />
                     <FormControl fullWidth margin="normal">
                         <InputLabel id="level-label">Level</InputLabel>
@@ -150,21 +137,83 @@ const AddProjectPage = ({ onDone, setData, data }) => {
                         )}
                     </FormControl>
                     <FormControl fullWidth margin="normal">
-                        <InputLabel id="categories-label">Categories</InputLabel>
+                        <InputLabel id="skills-label">Skills Needed</InputLabel>
                         <Select
-                            labelId="categories-label"
+                            labelId="skills-label"
                             multiple
-                            value={formik.values.categories}
+                            value={formik.values.skills}
                             onChange={formik.handleChange}
-                            name="categories"
+                            name="skills"
                             renderValue={(selected) => selected.join(", ")}
                         >
-                            <MenuItem value="Web Development">Web Development</MenuItem>
-                            <MenuItem value="Mobile Development">Mobile Development</MenuItem>
-                            <MenuItem value="Data Science">Data Science</MenuItem>
-                            <MenuItem value="Machine Learning">Machine Learning</MenuItem>
+                            <MenuItem value="Capcut">Capcut</MenuItem>
+                            <MenuItem value="Adobe Photoshop">Adobe Photoshop</MenuItem>
+                            <MenuItem value="Adobe Indesign">Adobe Indesign</MenuItem>
+                            <MenuItem value="Recording">Recording</MenuItem>
                         </Select>
+                        {formik.touched.skills && formik.errors.skills && (
+                            <Typography color="error">{formik.errors.skills}</Typography>
+                        )}
                     </FormControl>
+                    <Stack direction='row'>
+                        <TextField
+                            label="Duration"
+                            fullWidth
+                            margin="normal"
+                            value={formik.values.duration}
+                            onChange={formik.handleChange}
+                            name="duration"
+                            error={
+                                formik.touched.duration && Boolean(formik.errors.duration)
+                            }
+                            helperText={formik.touched.duration && formik.errors.duration}
+                        />
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="durationLength">Length</InputLabel>
+                            <Select
+                                labelId="durationLength"
+                                value={formik.values.durationLength}
+                                onChange={formik.handleChange}
+                                name="durationLength"
+                            >
+                                <MenuItem value="hour">Hour</MenuItem>
+                                <MenuItem value="day">Day</MenuItem>
+                                <MenuItem value="week">Week</MenuItem>
+                                <MenuItem value="month">Month</MenuItem>
+                                <MenuItem value="year">Year</MenuItem>
+                            </Select>
+                            {formik.touched.durationLength && formik.errors.durationLength && (
+                                <Typography color="error">{formik.errors.durationLength}</Typography>
+                            )}
+                        </FormControl>
+                    </Stack>
+                    <Stack direction='row'>
+                        <TextField
+                            label="Number of Installments"
+                            fullWidth
+                            margin="normal"
+                            value={formik.values.installments}
+                            onChange={formik.handleChange}
+                            name="installments"
+                            error={
+                                formik.touched.installments && Boolean(formik.errors.installments)
+                            }
+                            helperText={formik.touched.installments && formik.errors.installments}
+                        />
+                        <TextField
+                            label="Budget"
+                            fullWidth
+                            margin="normal"
+                            type="number"
+                            value={formik.values.price}
+                            onChange={formik.handleChange}
+                            name="price"
+                            error={
+                                formik.touched.price && Boolean(formik.errors.price)
+                            }
+                            helperText={formik.touched.price && formik.errors.price}
+                        />
+                    </Stack>
                     <Box
                         sx={{
                             padding: 2,

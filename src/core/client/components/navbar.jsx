@@ -78,7 +78,7 @@ export default function ClientNavbar() {
                                     : <Nightlight />
                             }
                         </IconButton>
-                        <Button startIcon={<AddOutlined />} variant='text'>Add Project</Button>
+                        <Button startIcon={<AddOutlined />} variant='text' onClick={() => navigate('./add-project')}>Add Project</Button>
                         <IconButton onClick={() => navigate('./profile')}>
                             <Avatar src={"default_profile_pic.png"} />
                         </IconButton>

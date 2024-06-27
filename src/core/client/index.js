@@ -9,6 +9,7 @@ import ProfilePage from "./pages/profile_page";
 import ProjectPage from "./pages/project_page";
 import EditorsInfo from "./pages/editors_info";
 import EditorsPage from "./pages/editors_page";
+import NewProject from "./pages/new_project";
 
 export {
     ClientHomePage,
